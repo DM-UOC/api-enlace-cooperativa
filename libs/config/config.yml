@@ -1,0 +1,53 @@
+---
+production: &default
+  environment: production
+  port: 3000
+  microservicios:
+    archivos:
+      alias: MS_SEGURIDAD
+      nombre: dc_js_msseguridad
+      puerto: 3001
+    inventario:
+      alias: MS_COOPERATIVA
+      nombre: dc_js_mscooperativa
+      puerto: 3002
+  carpetas:
+    publicas:
+      publica: public
+      uploads: uploads
+  eliminacion:
+    tiempo: 120000
+  cadenas:
+    microservicio:
+      archivos:
+        retornar:
+          firma_digital: genera_firma
+      inventarios:
+        registra_equipo: registra_equipo
+    mensajes:
+      api: API Enlace ha inciado correctamente...
+      archivo:
+        generado: ¡Firma Digital generada correctamente!
+      errores:
+        certificado: ¡Certificado Inválido. Verifique!
+        credenciales: ¡Las credenciales son incorrectas. Verifique!
+        ejecucion: Error en ejecución
+
+stage: &stage
+  <<: *default
+
+test: &latest
+  <<: *stage
+
+development:
+  <<: *latest
+  environment: development
+  microservicios:
+    archivos:
+      alias: MS_SEGURIDAD
+      nombre: ''
+      puerto: 3014
+    inventario:
+      alias: MS_COOPERATIVA
+      nombre: ''
+      puerto: 3015      

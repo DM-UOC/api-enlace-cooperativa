@@ -1,0 +1,17 @@
+[
+  {
+    "name": "api-cooperativa-enlace",
+    "script": "npm",
+    "args": "run start:debug",
+    "watch": [
+      "./dist"
+    ],        
+    "ignore_watch": [
+      "./node_modules",
+      "./dist"
+    ],
+    "env": {
+      "NODE_ENV": "development"
+    }
+  }
+]
