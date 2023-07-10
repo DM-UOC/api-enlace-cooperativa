@@ -11,11 +11,11 @@ import config from '@app/libs/config/config';
   imports: [
     ClientsModule.register([
       {
-        name: config().microservicios.archivos.alias,
+        name: config().microservicios.cooperativa.alias,
         transport: Transport.TCP,
         options: {
-          host: config().microservicios.archivos.nombre,
-          port: config().microservicios.archivos.puerto
+          host: config().microservicios.cooperativa.nombre,
+          port: config().microservicios.cooperativa.puerto
         },
       },
     ]),

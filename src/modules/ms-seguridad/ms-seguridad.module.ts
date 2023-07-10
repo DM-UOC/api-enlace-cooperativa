@@ -11,11 +11,11 @@ import config from '@app/libs/config/config';
   imports: [
     ClientsModule.register([
       {
-        name: config().microservicios.archivos.alias,
+        name: config().microservicios.seguridad.alias,
         transport: Transport.TCP,
         options: {
-          host: config().microservicios.archivos.nombre,
-          port: config().microservicios.archivos.puerto
+          host: config().microservicios.seguridad.nombre,
+          port: config().microservicios.seguridad.puerto
         },
       },
     ]),

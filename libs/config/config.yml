@@ -3,11 +3,11 @@ production: &default
   environment: production
   port: 3000
   microservicios:
-    archivos:
+    seguridad:
       alias: MS_SEGURIDAD
       nombre: dc_js_msseguridad
       puerto: 3001
-    inventario:
+    cooperativa:
       alias: MS_COOPERATIVA
       nombre: dc_js_mscooperativa
       puerto: 3002
@@ -19,18 +19,16 @@ production: &default
     tiempo: 120000
   cadenas:
     microservicio:
-      archivos:
-        retornar:
-          firma_digital: genera_firma
-      inventarios:
-        registra_equipo: registra_equipo
+      seguridad:
+        autenticar: autenticar
+      cooperativa:
+        informacion: informacion
     mensajes:
-      api: API Enlace ha inciado correctamente...
-      archivo:
+      api: API Enlace Cooperativa ha inciado correctamente...
+      seguridad:
         generado: ¡Firma Digital generada correctamente!
       errores:
-        certificado: ¡Certificado Inválido. Verifique!
-        credenciales: ¡Las credenciales son incorrectas. Verifique!
+        autenticacion: ¡Las credenciales son incorrectas. Verifique!
         ejecucion: Error en ejecución
 
 stage: &stage
@@ -43,11 +41,11 @@ development:
   <<: *latest
   environment: development
   microservicios:
-    archivos:
+    seguridad:
       alias: MS_SEGURIDAD
       nombre: ''
-      puerto: 3014
-    inventario:
+      puerto: 3001
+    cooperativa:
       alias: MS_COOPERATIVA
       nombre: ''
-      puerto: 3015      
+      puerto: 3002
