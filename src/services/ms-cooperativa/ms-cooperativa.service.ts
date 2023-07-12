@@ -8,7 +8,7 @@ import config from '@app/libs/config/config';
 export class MsCooperativaService {
 
   constructor(
-    @Inject(config().microservicios.inventario.alias)
+    @Inject(config().microservicios.cooperativa.alias)
     private readonly clientProxyCooperativa: ClientProxy,
     private readonly configService: ConfigService
   ) {}

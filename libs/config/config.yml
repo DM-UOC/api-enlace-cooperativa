@@ -7,6 +7,8 @@ production: &default
       alias: MS_SEGURIDAD
       nombre: dc_js_msseguridad
       puerto: 3001
+      procesos:
+        login: login
     cooperativa:
       alias: MS_COOPERATIVA
       nombre: dc_js_mscooperativa
@@ -45,6 +47,8 @@ development:
       alias: MS_SEGURIDAD
       nombre: ''
       puerto: 3001
+      procesos:
+        login: login      
     cooperativa:
       alias: MS_COOPERATIVA
       nombre: ''
