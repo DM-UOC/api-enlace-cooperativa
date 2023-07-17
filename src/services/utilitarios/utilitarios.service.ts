@@ -128,4 +128,22 @@ export class UtilitariosService {
     return Buffer.from(strBase64, 'base64').length / 1e6;
   }
   
+  static retornaCadenaMensajes(objetoConfiguracion: any) {
+    try {
+      /**
+       * * desestructura objeto de configuracion yml...
+       */
+      const { mensajes, microservicio } = objetoConfiguracion;
+      const { archivo, errores } = mensajes;
+      // retornamos los diferentes mensajes...
+      return {
+        microservicio,
+        archivo,
+        errores
+      }      
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
