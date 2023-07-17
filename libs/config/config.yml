@@ -48,7 +48,7 @@ development:
       nombre: ''
       puerto: 3001
       procesos:
-        login: login      
+        autenticacion: autenticacion      
     cooperativa:
       alias: MS_COOPERATIVA
       nombre: ''

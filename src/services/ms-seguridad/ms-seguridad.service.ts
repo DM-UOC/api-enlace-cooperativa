@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { catchError, map, throwError } from 'rxjs';
 
+import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
+
 import config from '@app/libs/config/config';
 
 @Injectable()
@@ -14,14 +16,12 @@ export class MsSeguridadService {
     private readonly configService: ConfigService
   ) {}
 
-  login() {
+  autenticacion(autenticacionDto: AutenticacionDto) {
     try {
       return this.clientProxySeguridad.send(
-        { cmd: config().microservicios.seguridad.procesos.login }, 
-        {
-          correo: 'mail@mail.com',
-          clave: '123456'
-        }).pipe(
+        { cmd: config().microservicios.seguridad.procesos.autenticacion },
+        autenticacionDto
+        ).pipe(
           map(result => {
             console.log("*********************");
           }),
