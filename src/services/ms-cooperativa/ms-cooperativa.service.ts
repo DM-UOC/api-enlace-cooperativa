@@ -18,6 +18,7 @@ export class MsCooperativaService {
 
   autenticar(autenticacionDto: AutenticacionDto) {
     try {
+      // * retornando proceso de cooperativa..
       return this.clientProxyCooperativa.send({
         cmd: UtilitariosService.retornaCadenaMensajes(this.configService.get('cadenas')).microservicio.seguridad.autenticar
       }, autenticacionDto);

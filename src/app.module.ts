@@ -1,12 +1,21 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MsCooperativaModule } from '@modules/ms-cooperativa/ms-cooperativa.module';
 import { MsSeguridadModule } from '@modules/ms-seguridad/ms-seguridad.module';
 
+import config from '@app/libs/config/config';
+
 @Module({
-  imports: [MsCooperativaModule, MsSeguridadModule],
+  imports: [
+    ConfigModule.forRoot({
+      load: [config],
+    }),    
+    MsCooperativaModule, 
+    MsSeguridadModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

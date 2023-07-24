@@ -45,11 +45,11 @@ development:
   microservicios:
     seguridad:
       alias: MS_SEGURIDAD
-      nombre: ''
+      nombre: '0.0.0.0'
       puerto: 3001
       procesos:
         autenticacion: autenticacion      
     cooperativa:
       alias: MS_COOPERATIVA
-      nombre: ''
+      nombre: '0.0.0.0'
       puerto: 3002
