@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, of, throwError } from 'rxjs';
 
 import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
 
@@ -23,7 +23,8 @@ export class MsSeguridadService {
       return this.clientProxySeguridad.send(
         { cmd: config().microservicios.seguridad.procesos.autenticacion },
         autenticacionDto
-        ).pipe(
+        )
+        .pipe(
           map(result => {
             return {
               status: HttpStatus.ACCEPTED,
@@ -32,7 +33,7 @@ export class MsSeguridadService {
           }),
           catchError((error) => {
             // * lanza el error...
-            return throwError(() => error)
+            return throwError(() =>  error);
           })
         );
     } catch (error) {

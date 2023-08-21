@@ -9,9 +9,14 @@ export class MsSeguridadController {
   
   constructor(private readonly msSeguridadService: MsSeguridadService) {}
 
-  @Get()
+  @Post()
   autenticacion(@Query() autenticacionDto: AutenticacionDto) {
-    return this.msSeguridadService.autenticacion(autenticacionDto);
+    try {      
+      console.log("enlace...")
+      return this.msSeguridadService.autenticacion(autenticacionDto);
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Post('crear')
