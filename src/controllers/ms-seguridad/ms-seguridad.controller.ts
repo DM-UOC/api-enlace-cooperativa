@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Post, UseFilters } from '@nestjs/common';
+import { catchError, throwError } from 'rxjs';
 
 import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
 import { UsuarioDto } from '@models/ms-seguridad/usuario/usuario.dto';
@@ -10,10 +11,15 @@ export class MsSeguridadController {
   constructor(private readonly msSeguridadService: MsSeguridadService) {}
 
   @Post()
-  autenticacion(@Query() autenticacionDto: AutenticacionDto) {
+  autenticacion(@Body() autenticacionDto: AutenticacionDto) {
     try {      
-      console.log("enlace...")
-      return this.msSeguridadService.autenticacion(autenticacionDto);
+      return this.msSeguridadService
+        .autenticacion(autenticacionDto)
+        .pipe(
+          catchError((error) => {
+            return throwError(() => new HttpException(error, HttpStatus.CONFLICT))
+          })          
+        );
     } catch (error) {
       throw error;
     }

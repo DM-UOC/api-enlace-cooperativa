@@ -23,18 +23,6 @@ export class MsSeguridadService {
       return this.clientProxySeguridad.send(
         { cmd: config().microservicios.seguridad.procesos.autenticacion },
         autenticacionDto
-        )
-        .pipe(
-          map(result => {
-            return {
-              status: HttpStatus.ACCEPTED,
-              message: result
-            }
-          }),
-          catchError((error) => {
-            // * lanza el error...
-            return throwError(() =>  error);
-          })
         );
     } catch (error) {
       throw error;
