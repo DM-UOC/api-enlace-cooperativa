@@ -9,7 +9,6 @@ declare const global: Globals;
 
 @Injectable()
 export class UtilitariosService {
-  
   static FORMATOS = {
     FECHA: {
       YYYYMMDD_HHMM: 'YYYY-MM-DD HH:mm',
@@ -36,7 +35,7 @@ export class UtilitariosService {
     return moment().format(UtilitariosService.FORMATOS.FECHA.YYYYMMDD_HHMM);
   }
 
-  static verificaFechas(fechaComparar: Date, esMayor: boolean = false) {
+  static verificaFechas(fechaComparar: Date, esMayor = false) {
     // * false -> la fecha Actual > a la indicada...
     if (!esMayor) return moment().isAfter(moment(fechaComparar));
     // * true -> la fecha actual < a la indicada...
@@ -52,7 +51,7 @@ export class UtilitariosService {
     // desestructura el objeto...
     const { carpetas } = global.$config;
     const { publicas } = carpetas;
-    const { uploads } = publicas 
+    const { uploads } = publicas;
     // retornando la ruta raiz del proyecto...
     return `${ruta}${uploads}`;
   }
@@ -61,7 +60,7 @@ export class UtilitariosService {
     // desestructura el objeto...
     const { carpetas } = global.$config;
     const { publicas } = carpetas;
-    const { publica } = publicas 
+    const { publica } = publicas;
     // retornando la ruta raiz del proyecto...
     return `/${publica}`;
   }
@@ -76,7 +75,13 @@ export class UtilitariosService {
   }
 
   static retornaRutaDescargaArchivo(usuario: string, nombreArchivo: string) {
-    return join(UtilitariosService.retornaRutaCarpetaUploads(UtilitariosService.retornaRutaRaizProyecto()), usuario, nombreArchivo);   
+    return join(
+      UtilitariosService.retornaRutaCarpetaUploads(
+        UtilitariosService.retornaRutaRaizProyecto(),
+      ),
+      usuario,
+      nombreArchivo,
+    );
   }
 
   static retornaBufferArchivo(pathFile: string) {
@@ -89,16 +94,24 @@ export class UtilitariosService {
   }
 
   /**
-   * 
-   * @param usuario 
+   *
+   * @param usuario
    * @returns void
    * TODO; Elimina la carpeta del usuario una vez descargado...
    */
   static eliminaCarpetaUsuarioDescarga(usuario: string) {
-    rmSync(join(UtilitariosService.retornaRutaCarpetaUploads(UtilitariosService.retornaRutaRaizProyecto()), usuario), {
-      force: true,
-      recursive: true
-    });
+    rmSync(
+      join(
+        UtilitariosService.retornaRutaCarpetaUploads(
+          UtilitariosService.retornaRutaRaizProyecto(),
+        ),
+        usuario,
+      ),
+      {
+        force: true,
+        recursive: true,
+      },
+    );
   }
 
   static retornaRutaPorExtension(
@@ -127,7 +140,7 @@ export class UtilitariosService {
     // recogemos el buffer y retornamos el peso en MB...
     return Buffer.from(strBase64, 'base64').length / 1e6;
   }
-  
+
   static retornaCadenaMensajes(objetoConfiguracion: any) {
     try {
       /**
@@ -139,11 +152,10 @@ export class UtilitariosService {
       return {
         microservicio,
         archivo,
-        errores
-      }      
+        errores,
+      };
     } catch (error) {
       throw error;
     }
   }
-
 }

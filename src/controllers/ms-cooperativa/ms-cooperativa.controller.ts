@@ -5,12 +5,10 @@ import { MsCooperativaService } from '@services/ms-cooperativa/ms-cooperativa.se
 
 @Controller('ms-cooperativa')
 export class MsCooperativaController {
-  
   constructor(private readonly msCooperativaService: MsCooperativaService) {}
 
   @Get()
   autenticar(@Query() autenticacionDto: AutenticacionDto) {
     return this.msCooperativaService.autenticar(autenticacionDto);
   }
-  
 }
