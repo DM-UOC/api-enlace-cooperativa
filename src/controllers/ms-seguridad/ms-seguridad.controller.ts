@@ -1,11 +1,5 @@
-import {
-  Body,
-  Controller,
-  HttpException,
-  HttpStatus,
-  Post,
-} from '@nestjs/common';
-import { catchError, tap, throwError } from 'rxjs';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 
 import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
 import { UsuarioDto } from '@models/ms-seguridad/usuario/usuario.dto';
@@ -16,9 +10,17 @@ export class MsSeguridadController {
   constructor(private readonly msSeguridadService: MsSeguridadService) {}
 
   @Post()
-  autenticacion(@Body() autenticacionDto: AutenticacionDto) {
+  autenticacion(
+    @Body() autenticacionDto: AutenticacionDto,
+    @Res() response: Response,
+  ) {
     try {
-      return this.msSeguridadService.autenticacion(autenticacionDto);
+      this.msSeguridadService.autenticacion(autenticacionDto).subscribe({
+        next(token) {
+          // * responde el token...
+          return response.status(HttpStatus.OK).json(token);
+        },
+      });
     } catch (error) {
       throw error;
     }

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { tap, catchError, throwError } from 'rxjs';
+import { tap, catchError, throwError, switchMap } from 'rxjs';
 
 import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
 
@@ -20,7 +20,7 @@ export class MsSeguridadService {
     try {
       // * retornando procesos de autenticación...
       return this.clientProxySeguridad
-        .emit(
+        .send(
           { cmd: config().microservicios.seguridad.procesos.autenticacion },
           autenticacionDto,
         )
