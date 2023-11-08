@@ -1,4 +1,13 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { Response } from 'express';
 
 import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
@@ -19,6 +28,20 @@ export class MsSeguridadController {
         next(token) {
           // * responde el token...
           return response.status(HttpStatus.OK).json(token);
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get('menus')
+  menus(@Query('_id') _id: string, @Res() response: Response) {
+    try {
+      this.msSeguridadService.menus(_id).subscribe({
+        next(menus) {
+          // * responde el token...
+          return response.status(HttpStatus.OK).json(menus);
         },
       });
     } catch (error) {

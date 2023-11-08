@@ -36,6 +36,23 @@ export class MsSeguridadService {
     }
   }
 
+  menus(_id: string) {
+    try {
+      // * retornando menus usuario...
+      return this.clientProxySeguridad
+        .send({ cmd: config().microservicios.seguridad.procesos.menus }, _id)
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   crear(usuarioDto: UsuarioDto) {
     try {
       this.clientProxySeguridad.emit(
