@@ -29,6 +29,9 @@ export class MsSeguridadController {
           // * responde el token...
           return response.status(HttpStatus.OK).json(token);
         },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
       });
     } catch (error) {
       throw error;
@@ -42,6 +45,9 @@ export class MsSeguridadController {
         next(menus) {
           // * responde el token...
           return response.status(HttpStatus.OK).json(menus);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
         },
       });
     } catch (error) {
