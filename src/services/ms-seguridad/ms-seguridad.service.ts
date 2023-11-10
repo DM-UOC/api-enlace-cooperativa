@@ -4,9 +4,9 @@ import { ClientProxy } from '@nestjs/microservices';
 import { tap, catchError, throwError, switchMap } from 'rxjs';
 
 import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
+import { CreateUsuarioDto } from '@models/ms-seguridad/usuario/dto/create-usuario.dto';
 
 import config from '@app/libs/config/config';
-import { UsuarioDto } from '@app/src/models/ms-seguridad/usuario/usuario.dto';
 
 @Injectable()
 export class MsSeguridadService {
@@ -53,13 +53,20 @@ export class MsSeguridadService {
     }
   }
 
-  crear(usuarioDto: UsuarioDto) {
+  crear(createUsuarioDto: CreateUsuarioDto) {
     try {
-      this.clientProxySeguridad.emit(
+      return this.clientProxySeguridad.send(
         {
-          cmd: '',
+          cmd: config().microservicios.seguridad.procesos.usuarios.crear
         },
-        usuarioDto,
+        createUsuarioDto,
+      )
+      .pipe(
+        catchError((error) => {
+          return throwError(
+            () => new HttpException(error, HttpStatus.CONFLICT),
+          );
+        }),
       );
     } catch (error) {
       throw error;

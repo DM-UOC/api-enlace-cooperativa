@@ -10,6 +10,8 @@ production: &default
       procesos:
         autenticacion: autenticacion
         menus: menus
+        usuarios:
+          crear: crear_usuario        
     cooperativa:
       alias: MS_COOPERATIVA
       nombre: dc_js_mscooperativa
@@ -51,6 +53,8 @@ development:
       procesos:
         autenticacion: autenticacion
         menus: menus
+        usuarios:
+          crear: crear_usuario
     cooperativa:
       alias: MS_COOPERATIVA
       nombre: '0.0.0.0'

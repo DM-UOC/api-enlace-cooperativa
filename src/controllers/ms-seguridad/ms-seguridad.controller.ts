@@ -11,8 +11,8 @@ import {
 import { Response } from 'express';
 
 import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
-import { UsuarioDto } from '@models/ms-seguridad/usuario/usuario.dto';
 import { MsSeguridadService } from '@services/ms-seguridad/ms-seguridad.service';
+import { CreateUsuarioDto } from '@models/ms-seguridad/usuario/dto/create-usuario.dto';
 
 @Controller('ms-seguridad')
 export class MsSeguridadController {
@@ -55,8 +55,17 @@ export class MsSeguridadController {
     }
   }
 
-  @Post('crear')
-  crearUsuario(@Body() usuarioDto: UsuarioDto) {
-    return this.msSeguridadService.crear(usuarioDto);
+  @Post('usuario/crear')
+  crearUsuario(@Body() createUsuarioDto: CreateUsuarioDto,
+  @Res() response: Response) {
+    return this.msSeguridadService.crear(createUsuarioDto).subscribe({
+      next(menus) {
+        // * responde el token...
+        return response.status(HttpStatus.OK).json(menus);
+      },
+      error(err) {
+        return response.status(HttpStatus.BAD_REQUEST).json(err);
+      },
+    });
   }
 }
