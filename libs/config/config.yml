@@ -2,6 +2,12 @@
 production: &default
   environment: production
   port: 3000
+  seguridad:
+    secreto: 933593b7aedb2c018fab87fb5ada6a2c
+    llave:
+      clave: p@s$$w0Rd/k3Y
+    tiempo:
+      caducidad: 1h # 60 minutos...
   microservicios:
     seguridad:
       alias: MS_SEGURIDAD
@@ -11,7 +17,7 @@ production: &default
         autenticacion: autenticacion
         menus: menus
         usuarios:
-          crear: crear_usuario        
+          crear: crear_usuario
     cooperativa:
       alias: MS_COOPERATIVA
       nombre: dc_js_mscooperativa
@@ -54,6 +60,7 @@ development:
         autenticacion: autenticacion
         menus: menus
         usuarios:
+          listado: listado_usuarios
           crear: crear_usuario
     cooperativa:
       alias: MS_COOPERATIVA

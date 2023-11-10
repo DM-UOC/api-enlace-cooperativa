@@ -12,9 +12,9 @@ import config from '@app/libs/config/config';
   imports: [
     ConfigModule.forRoot({
       load: [config],
-    }),    
-    MsCooperativaModule, 
-    MsSeguridadModule
+    }),
+    MsCooperativaModule,
+    MsSeguridadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
