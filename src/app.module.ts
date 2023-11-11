@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MsCooperativaModule } from '@modules/ms-cooperativa/ms-cooperativa.module';
 import { MsSeguridadModule } from '@modules/ms-seguridad/ms-seguridad.module';
+import { MsUsuariosModule } from '@modules/ms-seguridad/ms-usuarios/ms-usuarios.module';
 
 import config from '@app/libs/config/config';
 
@@ -12,9 +13,10 @@ import config from '@app/libs/config/config';
   imports: [
     ConfigModule.forRoot({
       load: [config],
-    }),
-    MsCooperativaModule,
-    MsSeguridadModule,
+    }),    
+    MsCooperativaModule, 
+    MsSeguridadModule, 
+    MsUsuariosModule
   ],
   controllers: [AppController],
   providers: [AppService],
