@@ -15,7 +15,10 @@ production: &default
       puerto: 3001
       procesos:
         autenticacion: autenticacion
-        menus: menus
+        menus:
+          listado: listado_menus
+          crear: crear_menu
+          editar: editar_menu
         usuarios:
           listado: listado_usuarios
           crear: crear_usuario
@@ -64,7 +67,10 @@ development:
       puerto: 3001
       procesos:
         autenticacion: autenticacion
-        menus: menus
+        menus:
+          listado: listado_menus
+          crear: crear_menu
+          editar: editar_menu
         usuarios:
           listado: listado_usuarios
           crear: crear_usuario

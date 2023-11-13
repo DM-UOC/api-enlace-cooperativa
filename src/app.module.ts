@@ -7,6 +7,7 @@ import { MsCooperativaModule } from '@modules/ms-cooperativa/ms-cooperativa.modu
 import { MsSeguridadModule } from '@modules/ms-seguridad/ms-seguridad.module';
 import { MsUsuariosModule } from '@modules/ms-seguridad/ms-usuarios/ms-usuarios.module';
 import { MsRolesModule } from '@modules/ms-seguridad/ms-roles/ms-roles.module';
+import { MsMenusModule } from '@modules/ms-seguridad/ms-menus/ms-menus.module';
 
 import config from '@app/libs/config/config';
 
@@ -17,7 +18,9 @@ import config from '@app/libs/config/config';
     }),    
     MsCooperativaModule, 
     MsSeguridadModule, 
-    MsUsuariosModule, MsRolesModule
+    MsUsuariosModule, 
+    MsRolesModule, 
+    MsMenusModule
   ],
   controllers: [AppController],
   providers: [AppService],
