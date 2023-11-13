@@ -1,9 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
+import { catchError, throwError } from 'rxjs';
 
 import { CreateMsMenuDto } from '@models/ms-seguridad/ms-menus/dto/create-ms-menu.dto';
 import { UpdateMsMenuDto } from '@models/ms-seguridad/ms-menus/dto/update-ms-menu.dto';
+import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
 
 import config from '@app/libs/config/config';
 
@@ -15,20 +17,109 @@ export class MsMenusService {
     private readonly configService: ConfigService,
   ) {}
 
-  create(createMsMenuDto: CreateMsMenuDto) {
-    return 'This action adds a new msMenu';
+  usuarioMenus(_id: string) {
+    try {
+      // * retornando menus usuario...
+      return this.clientProxySeguridad
+        .send(
+          { cmd: config().microservicios.seguridad.procesos.menus.usuario },
+          _id,
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  create(
+    createMsMenuDto: CreateMsMenuDto,
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    try {
+      // * desestructura el objeto de autorización...
+      const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;
+      // * enviando mensaje al MS...
+      return this.clientProxySeguridad
+        .send(
+          {
+            cmd: config().microservicios.seguridad.procesos.menus.crear,
+          },
+          {
+            ...createMsMenuDto,
+            ...autorizacionDTO,
+          },
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
   }
 
   findAll() {
-    return `This action returns all msMenus`;
+    try {
+      return this.clientProxySeguridad
+        .send(
+          {
+            cmd: config().microservicios.seguridad.procesos.menus.listado,
+          },
+          {},
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
   }
 
   findOne(id: number) {
     return `This action returns a #${id} msMenu`;
   }
 
-  update(id: number, updateMsMenuDto: UpdateMsMenuDto) {
-    return `This action updates a #${id} msMenu`;
+  update(
+    updateMsMenuDto: UpdateMsMenuDto,
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    try {
+      // * desestructura el objeto de autorización...
+      const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;
+      // * ms editar...
+      return this.clientProxySeguridad
+        .send(
+          {
+            cmd: config().microservicios.seguridad.procesos.menus.editar,
+          },
+          {
+            ...updateMsMenuDto,
+            ...autorizacionDTO,
+          },
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
   }
 
   remove(id: number) {

@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Res,
+  HttpStatus,
+} from '@nestjs/common';
 import { Response } from 'express';
 
 import { Autorizacion } from '@decorators/autorizacion.decorator';
@@ -17,26 +28,26 @@ export class MsRolesController {
   constructor(private readonly msRolesService: MsRolesService) {}
 
   @Post()
-  create(@Body() createMsRoleDto: CreateMsRoleDto,
-  @Res() response: Response,
-  @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto) {
+  create(
+    @Body() createMsRoleDto: CreateMsRoleDto,
+    @Res() response: Response,
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
     return this.msRolesService
-    .create(createMsRoleDto, autorizacionUsuarioDto)
-    .subscribe({
-      next(usuario) {
-        // * responde el token...
-        return response.status(HttpStatus.OK).json(usuario);
-      },
-      error(err) {
-        return response.status(HttpStatus.BAD_REQUEST).json(err);
-      },
-    });     
+      .create(createMsRoleDto, autorizacionUsuarioDto)
+      .subscribe({
+        next(usuario) {
+          // * responde el token...
+          return response.status(HttpStatus.OK).json(usuario);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
   }
 
   @Get()
-  findAll(
-    @Res() response: Response,    
-  ) {
+  findAll(@Res() response: Response) {
     return this.msRolesService.findAll().subscribe({
       next(listado) {
         // * responde el token...
@@ -57,17 +68,19 @@ export class MsRolesController {
   update(
     @Body() updateMsRoleDto: UpdateMsRoleDto,
     @Res() response: Response,
-    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto
-    ) {
-    return this.msRolesService.update(updateMsRoleDto, autorizacionUsuarioDto).subscribe({
-      next(listado) {
-        // * responde el token...
-        return response.status(HttpStatus.OK).json(listado);
-      },
-      error(err) {
-        return response.status(HttpStatus.BAD_REQUEST).json(err);
-      },
-    });
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    return this.msRolesService
+      .update(updateMsRoleDto, autorizacionUsuarioDto)
+      .subscribe({
+        next(listado) {
+          // * responde el token...
+          return response.status(HttpStatus.OK).json(listado);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
   }
 
   @Delete(':id')

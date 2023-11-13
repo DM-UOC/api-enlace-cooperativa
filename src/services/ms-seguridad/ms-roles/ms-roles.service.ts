@@ -19,7 +19,7 @@ export class MsRolesService {
 
   create(
     createMsRoleDto: CreateMsRoleDto,
-    autorizacionUsuarioDto: AutorizacionUsuarioDto
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
   ) {
     try {
       // * desestructura el objeto de autorización...
@@ -72,11 +72,14 @@ export class MsRolesService {
     return `This action returns a #${id} msRole`;
   }
 
-  update(updateMsRoleDto: UpdateMsRoleDto, autorizacionUsuarioDto: AutorizacionUsuarioDto) {
+  update(
+    updateMsRoleDto: UpdateMsRoleDto,
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
     try {
       // * desestructura el objeto de autorización...
       const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;
-      // * ms editar...      
+      // * ms editar...
       return this.clientProxySeguridad
         .send(
           {
@@ -93,10 +96,10 @@ export class MsRolesService {
               () => new HttpException(error, HttpStatus.CONFLICT),
             );
           }),
-        );      
+        );
     } catch (error) {
       throw error;
-    }    
+    }
   }
 
   remove(id: number) {

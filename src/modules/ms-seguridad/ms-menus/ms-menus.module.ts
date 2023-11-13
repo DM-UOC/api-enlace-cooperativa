@@ -21,8 +21,8 @@ import config from '@app/libs/config/config';
       },
     ]),
     ConfigModule,
-  ],    
+  ],
   controllers: [MsMenusController],
-  providers: [MsMenusService, MsAutorizacionService]
+  providers: [MsMenusService, MsAutorizacionService],
 })
 export class MsMenusModule {}
