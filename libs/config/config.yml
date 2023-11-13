@@ -17,7 +17,13 @@ production: &default
         autenticacion: autenticacion
         menus: menus
         usuarios:
+          listado: listado_usuarios
           crear: crear_usuario
+          editar: editar_usuario
+        roles:
+          listado: listado_roles
+          crear: crear_rol
+          editar: editar_rol 
     cooperativa:
       alias: MS_COOPERATIVA
       nombre: dc_js_mscooperativa
@@ -62,6 +68,11 @@ development:
         usuarios:
           listado: listado_usuarios
           crear: crear_usuario
+          editar: editar_usuario
+        roles:
+          listado: listado_roles
+          crear: crear_rol
+          editar: editar_rol          
     cooperativa:
       alias: MS_COOPERATIVA
       nombre: '0.0.0.0'

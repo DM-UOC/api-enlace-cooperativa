@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { MsUsuariosController } from '@controllers/ms-seguridad/ms-usuarios//ms-usuarios.controller';
-import { MsUsuariosService } from '@services/ms-seguridad/ms-usuarios/ms-usuarios.service';
+import { MsRolesController } from '@controllers/ms-seguridad/ms-roles/ms-roles.controller';
+import { MsRolesService } from '@services/ms-seguridad/ms-roles/ms-roles.service';
 import { MsAutorizacionService } from '@services/ms-seguridad/ms-autorizacion.service';
 
 import config from '@app/libs/config/config';
@@ -21,8 +21,8 @@ import config from '@app/libs/config/config';
       },
     ]),
     ConfigModule,
-  ],
-  controllers: [MsUsuariosController],
-  providers: [MsUsuariosService, MsAutorizacionService]
+  ],  
+  controllers: [MsRolesController],
+  providers: [MsRolesService, MsAutorizacionService]
 })
-export class MsUsuariosModule {}
+export class MsRolesModule {}

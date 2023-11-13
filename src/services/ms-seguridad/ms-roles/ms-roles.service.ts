@@ -3,15 +3,14 @@ import { ClientProxy } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { catchError, throwError } from 'rxjs';
 
-import { CreateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/create-ms-usuario.dto';
-import { UpdateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/update-ms-usuario.dto';
+import { CreateMsRoleDto } from '@models/ms-seguridad/ms-roles/dto/create-ms-role.dto';
+import { UpdateMsRoleDto } from '@models/ms-seguridad/ms-roles/dto/update-ms-role.dto';
 import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
 
 import config from '@app/libs/config/config';
 
 @Injectable()
-export class MsUsuariosService {
-  
+export class MsRolesService {
   constructor(
     @Inject(config().microservicios.seguridad.alias)
     private readonly clientProxySeguridad: ClientProxy,
@@ -19,7 +18,7 @@ export class MsUsuariosService {
   ) {}
 
   create(
-    createMsUsuarioDto: CreateMsUsuarioDto,
+    createMsRoleDto: CreateMsRoleDto,
     autorizacionUsuarioDto: AutorizacionUsuarioDto
   ) {
     try {
@@ -29,10 +28,10 @@ export class MsUsuariosService {
       return this.clientProxySeguridad
         .send(
           {
-            cmd: config().microservicios.seguridad.procesos.usuarios.crear,
+            cmd: config().microservicios.seguridad.procesos.roles.crear,
           },
           {
-            ...createMsUsuarioDto,
+            ...createMsRoleDto,
             ...autorizacionDTO,
           },
         )
@@ -53,7 +52,7 @@ export class MsUsuariosService {
       return this.clientProxySeguridad
         .send(
           {
-            cmd: config().microservicios.seguridad.procesos.usuarios.listado,
+            cmd: config().microservicios.seguridad.procesos.roles.listado,
           },
           {},
         )
@@ -70,10 +69,10 @@ export class MsUsuariosService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} msUsuario`;
+    return `This action returns a #${id} msRole`;
   }
 
-  update(updateMsUsuarioDto: UpdateMsUsuarioDto, autorizacionUsuarioDto: AutorizacionUsuarioDto) {
+  update(updateMsRoleDto: UpdateMsRoleDto, autorizacionUsuarioDto: AutorizacionUsuarioDto) {
     try {
       // * desestructura el objeto de autorización...
       const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;
@@ -81,10 +80,10 @@ export class MsUsuariosService {
       return this.clientProxySeguridad
         .send(
           {
-            cmd: config().microservicios.seguridad.procesos.usuarios.editar,
+            cmd: config().microservicios.seguridad.procesos.roles.editar,
           },
           {
-            ...updateMsUsuarioDto,
+            ...updateMsRoleDto,
             ...autorizacionDTO,
           },
         )
@@ -97,10 +96,10 @@ export class MsUsuariosService {
         );      
     } catch (error) {
       throw error;
-    }  
+    }    
   }
 
   remove(id: number) {
-    return `This action removes a #${id} msUsuario`;
+    return `This action removes a #${id} msRole`;
   }
 }

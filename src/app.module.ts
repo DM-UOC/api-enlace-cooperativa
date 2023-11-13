@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { MsCooperativaModule } from '@modules/ms-cooperativa/ms-cooperativa.module';
 import { MsSeguridadModule } from '@modules/ms-seguridad/ms-seguridad.module';
 import { MsUsuariosModule } from '@modules/ms-seguridad/ms-usuarios/ms-usuarios.module';
+import { MsRolesModule } from '@modules/ms-seguridad/ms-roles/ms-roles.module';
 
 import config from '@app/libs/config/config';
 
@@ -16,7 +17,7 @@ import config from '@app/libs/config/config';
     }),    
     MsCooperativaModule, 
     MsSeguridadModule, 
-    MsUsuariosModule
+    MsUsuariosModule, MsRolesModule
   ],
   controllers: [AppController],
   providers: [AppService],

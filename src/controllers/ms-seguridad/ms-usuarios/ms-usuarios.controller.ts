@@ -23,17 +23,17 @@ export class MsUsuariosController {
     @Res() response: Response,
     @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto
     ) {
-      return this.msUsuariosService
-      .create(createMsUsuarioDto, autorizacionUsuarioDto)
-      .subscribe({
-        next(usuario) {
-          // * responde el token...
-          return response.status(HttpStatus.OK).json(usuario);
-        },
-        error(err) {
-          return response.status(HttpStatus.BAD_REQUEST).json(err);
-        },
-      });    
+    return this.msUsuariosService
+    .create(createMsUsuarioDto, autorizacionUsuarioDto)
+    .subscribe({
+      next(usuario) {
+        // * responde el token...
+        return response.status(HttpStatus.OK).json(usuario);
+      },
+      error(err) {
+        return response.status(HttpStatus.BAD_REQUEST).json(err);
+      },
+    });    
   }
 
   @Get()
@@ -56,9 +56,21 @@ export class MsUsuariosController {
     return this.msUsuariosService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMsUsuarioDto: UpdateMsUsuarioDto) {
-    return this.msUsuariosService.update(+id, updateMsUsuarioDto);
+  @Patch()
+  update(
+    @Body() updateMsUsuarioDto: UpdateMsUsuarioDto,
+    @Res() response: Response,
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto    
+  ) {
+    return this.msUsuariosService.update(updateMsUsuarioDto, autorizacionUsuarioDto).subscribe({
+      next(listado) {
+        // * responde el token...
+        return response.status(HttpStatus.OK).json(listado);
+      },
+      error(err) {
+        return response.status(HttpStatus.BAD_REQUEST).json(err);
+      },
+    });    
   }
 
   @Delete(':id')
