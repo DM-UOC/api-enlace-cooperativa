@@ -20,6 +20,10 @@ production: &default
           listado: listado_menus
           crear: crear_menu
           editar: editar_menu
+        submenus:
+          listado: listado_submenus
+          crear: crear_submenu
+          editar: editar_submenu
         usuarios:
           listado: listado_usuarios
           crear: crear_usuario
@@ -73,6 +77,10 @@ development:
           listado: listado_menus
           crear: crear_menu
           editar: editar_menu
+        submenus:
+          listado: listado_submenus
+          crear: crear_submenu
+          editar: editar_submenu
         usuarios:
           listado: listado_usuarios
           crear: crear_usuario
