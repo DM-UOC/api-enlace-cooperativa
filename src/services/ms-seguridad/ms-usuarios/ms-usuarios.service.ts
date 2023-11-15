@@ -11,7 +11,6 @@ import config from '@app/libs/config/config';
 
 @Injectable()
 export class MsUsuariosService {
-  
   constructor(
     @Inject(config().microservicios.seguridad.alias)
     private readonly clientProxySeguridad: ClientProxy,
@@ -20,7 +19,7 @@ export class MsUsuariosService {
 
   create(
     createMsUsuarioDto: CreateMsUsuarioDto,
-    autorizacionUsuarioDto: AutorizacionUsuarioDto
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
   ) {
     try {
       // * desestructura el objeto de autorización...
@@ -69,15 +68,36 @@ export class MsUsuariosService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} msUsuario`;
+  findOne(id: string) {
+    try {
+      return this.clientProxySeguridad
+        .send(
+          {
+            cmd: config().microservicios.seguridad.procesos.usuario
+              .identificacion,
+          },
+          id,
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(updateMsUsuarioDto: UpdateMsUsuarioDto, autorizacionUsuarioDto: AutorizacionUsuarioDto) {
+  update(
+    updateMsUsuarioDto: UpdateMsUsuarioDto,
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
     try {
       // * desestructura el objeto de autorización...
       const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;
-      // * ms editar...      
+      // * ms editar...
       return this.clientProxySeguridad
         .send(
           {
@@ -94,10 +114,10 @@ export class MsUsuariosService {
               () => new HttpException(error, HttpStatus.CONFLICT),
             );
           }),
-        );      
+        );
     } catch (error) {
       throw error;
-    }  
+    }
   }
 
   remove(id: number) {

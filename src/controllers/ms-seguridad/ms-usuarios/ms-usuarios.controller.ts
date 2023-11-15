@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Res,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
 
 import { Autorizacion } from '@decorators/autorizacion.decorator';
@@ -11,35 +22,13 @@ import { MsUsuariosService } from '@services/ms-seguridad/ms-usuarios/ms-usuario
 
 import { SeguridadGuard } from '@guards/seguridad.guard';
 
-
-@UseGuards(SeguridadGuard)
 @Controller('ms-usuarios')
 export class MsUsuariosController {
   constructor(private readonly msUsuariosService: MsUsuariosService) {}
 
-  @Post()
-  create(
-    @Body() createMsUsuarioDto: CreateMsUsuarioDto,
-    @Res() response: Response,
-    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto
-    ) {
-    return this.msUsuariosService
-    .create(createMsUsuarioDto, autorizacionUsuarioDto)
-    .subscribe({
-      next(usuario) {
-        // * responde el token...
-        return response.status(HttpStatus.OK).json(usuario);
-      },
-      error(err) {
-        return response.status(HttpStatus.BAD_REQUEST).json(err);
-      },
-    });    
-  }
-
+  @UseGuards(SeguridadGuard)
   @Get()
-  findAll(
-    @Res() response: Response,
-  ) {
+  findAll(@Res() response: Response) {
     return this.msUsuariosService.findAll().subscribe({
       next(listado) {
         // * responde el token...
@@ -51,28 +40,52 @@ export class MsUsuariosController {
     });
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.msUsuariosService.findOne(+id);
+  @Get(':identificacion')
+  findOne(@Param('identificacion') identificacion: string) {
+    return this.msUsuariosService.findOne(identificacion);
   }
 
+  @UseGuards(SeguridadGuard)
+  @Post()
+  create(
+    @Body() createMsUsuarioDto: CreateMsUsuarioDto,
+    @Res() response: Response,
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    return this.msUsuariosService
+      .create(createMsUsuarioDto, autorizacionUsuarioDto)
+      .subscribe({
+        next(usuario) {
+          // * responde el token...
+          return response.status(HttpStatus.OK).json(usuario);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
+  }
+
+  @UseGuards(SeguridadGuard)
   @Patch()
   update(
     @Body() updateMsUsuarioDto: UpdateMsUsuarioDto,
     @Res() response: Response,
-    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto    
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
   ) {
-    return this.msUsuariosService.update(updateMsUsuarioDto, autorizacionUsuarioDto).subscribe({
-      next(listado) {
-        // * responde el token...
-        return response.status(HttpStatus.OK).json(listado);
-      },
-      error(err) {
-        return response.status(HttpStatus.BAD_REQUEST).json(err);
-      },
-    });    
+    return this.msUsuariosService
+      .update(updateMsUsuarioDto, autorizacionUsuarioDto)
+      .subscribe({
+        next(listado) {
+          // * responde el token...
+          return response.status(HttpStatus.OK).json(listado);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
   }
 
+  @UseGuards(SeguridadGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.msUsuariosService.remove(+id);

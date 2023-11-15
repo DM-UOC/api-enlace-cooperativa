@@ -28,6 +28,8 @@ production: &default
           listado: listado_usuarios
           crear: crear_usuario
           editar: editar_usuario
+        usuario:
+          identificacion: identificacion_usuario
         roles:
           listado: listado_roles
           crear: crear_rol
@@ -85,6 +87,8 @@ development:
           listado: listado_usuarios
           crear: crear_usuario
           editar: editar_usuario
+        usuario:
+          identificacion: identificacion_usuario
         roles:
           listado: listado_roles
           crear: crear_rol
