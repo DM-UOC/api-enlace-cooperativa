@@ -68,15 +68,18 @@ export class MsUsuariosService {
     }
   }
 
-  findOne(id: string) {
+  findOne(
+    opcion: string,
+    cmd: string = config().microservicios.seguridad.procesos.usuario
+      .identificacion,
+  ) {
     try {
       return this.clientProxySeguridad
         .send(
           {
-            cmd: config().microservicios.seguridad.procesos.usuario
-              .identificacion,
+            cmd,
           },
-          id,
+          opcion,
         )
         .pipe(
           catchError((error) => {
@@ -93,6 +96,7 @@ export class MsUsuariosService {
   update(
     updateMsUsuarioDto: UpdateMsUsuarioDto,
     autorizacionUsuarioDto: AutorizacionUsuarioDto,
+    cmd: string = config().microservicios.seguridad.procesos.usuarios.editar,
   ) {
     try {
       // * desestructura el objeto de autorización...
@@ -101,12 +105,37 @@ export class MsUsuariosService {
       return this.clientProxySeguridad
         .send(
           {
-            cmd: config().microservicios.seguridad.procesos.usuarios.editar,
+            cmd,
           },
           {
             ...updateMsUsuarioDto,
             ...autorizacionDTO,
           },
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  registroInicialPin(
+    updateMsUsuarioDto: UpdateMsUsuarioDto,
+    cmd: string = config().microservicios.seguridad.procesos.usuarios.editar,
+  ) {
+    try {
+      // * ms editar...
+      return this.clientProxySeguridad
+        .send(
+          {
+            cmd,
+          },
+          updateMsUsuarioDto,
         )
         .pipe(
           catchError((error) => {

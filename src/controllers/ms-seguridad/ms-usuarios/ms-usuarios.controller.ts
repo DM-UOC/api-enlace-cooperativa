@@ -9,6 +9,7 @@ import {
   Res,
   HttpStatus,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -21,6 +22,8 @@ import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autoriz
 import { MsUsuariosService } from '@services/ms-seguridad/ms-usuarios/ms-usuarios.service';
 
 import { SeguridadGuard } from '@guards/seguridad.guard';
+
+import config from '@app/libs/config/config';
 
 @Controller('ms-usuarios')
 export class MsUsuariosController {
@@ -38,6 +41,14 @@ export class MsUsuariosController {
         return response.status(HttpStatus.BAD_REQUEST).json(err);
       },
     });
+  }
+
+  @Get('existe/correo')
+  encuentraCorreoUnico(@Query('correo') correo: string) {
+    return this.msUsuariosService.findOne(
+      correo,
+      config().microservicios.seguridad.procesos.usuarios.correo.unico,
+    );
   }
 
   @Get(':identificacion')
@@ -74,6 +85,48 @@ export class MsUsuariosController {
   ) {
     return this.msUsuariosService
       .update(updateMsUsuarioDto, autorizacionUsuarioDto)
+      .subscribe({
+        next(listado) {
+          // * responde el token...
+          return response.status(HttpStatus.OK).json(listado);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
+  }
+
+  @Patch('inicial')
+  registroInicial(
+    @Body() updateMsUsuarioDto: UpdateMsUsuarioDto,
+    @Res() response: Response,
+  ) {
+    return this.msUsuariosService
+      .registroInicialPin(
+        updateMsUsuarioDto,
+        config().microservicios.seguridad.procesos.usuario.inicial,
+      )
+      .subscribe({
+        next(listado) {
+          // * responde el token...
+          return response.status(HttpStatus.OK).json(listado);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
+  }
+
+  @Patch('pin')
+  actualizaPin(
+    @Body() updateMsUsuarioDto: UpdateMsUsuarioDto,
+    @Res() response: Response,
+  ) {
+    return this.msUsuariosService
+      .registroInicialPin(
+        updateMsUsuarioDto,
+        config().microservicios.seguridad.procesos.usuario.pin,
+      )
       .subscribe({
         next(listado) {
           // * responde el token...
