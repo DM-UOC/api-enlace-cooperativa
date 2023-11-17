@@ -10,6 +10,10 @@ import {
   HttpStatus,
   UseGuards,
   Query,
+  UseInterceptors,
+  UploadedFiles,
+  UploadedFile,
+  Req,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -24,6 +28,8 @@ import { MsUsuariosService } from '@services/ms-seguridad/ms-usuarios/ms-usuario
 import { SeguridadGuard } from '@guards/seguridad.guard';
 
 import config from '@app/libs/config/config';
+import { multerImagen } from '@app/libs/multer/multer.imagen';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('ms-usuarios')
 export class MsUsuariosController {
@@ -74,6 +80,20 @@ export class MsUsuariosController {
           return response.status(HttpStatus.BAD_REQUEST).json(err);
         },
       });
+  }
+
+  @UseGuards(SeguridadGuard)
+  @UseInterceptors(multerImagen)
+  @Post('imagen')
+  cargaImagenAvatar(
+    @Body() createMsUsuarioDto: CreateMsUsuarioDto,
+    @Res() response: Response,
+    @Req() request: Request,
+    @UploadedFile() imagen: Express.Multer.File,
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    console.log(imagen);
+    return 'cargar archivo';
   }
 
   @UseGuards(SeguridadGuard)
