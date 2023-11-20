@@ -23,6 +23,7 @@
       "@decorators/*": ["src/decorators/*"],
       "@guards/*": ["src/guards/*"],
       "@filters/*": ["src/filters/*"],
+      "@pipes/*": ["src/pipes/*"],
       "@models/*": ["src/models/*"],
       "@modules/*": ["src/modules/*"],
       "@services/*": ["src/services/*"]

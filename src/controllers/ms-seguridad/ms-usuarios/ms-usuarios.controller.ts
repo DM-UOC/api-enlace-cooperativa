@@ -11,9 +11,9 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
-  UploadedFiles,
-  UploadedFile,
   Req,
+  UsePipes,
+  UploadedFiles,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -23,13 +23,14 @@ import { CreateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/create-
 import { UpdateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/update-ms-usuario.dto';
 import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
 
+import { BodyParamsPipe } from '@pipes/bodyparams/bodyparams.pipe';
+
 import { MsUsuariosService } from '@services/ms-seguridad/ms-usuarios/ms-usuarios.service';
 
 import { SeguridadGuard } from '@guards/seguridad.guard';
 
-import config from '@app/libs/config/config';
 import { multerImagen } from '@app/libs/multer/multer.imagen';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import config from '@app/libs/config/config';
 
 @Controller('ms-usuarios')
 export class MsUsuariosController {
@@ -83,16 +84,17 @@ export class MsUsuariosController {
   }
 
   @UseGuards(SeguridadGuard)
+  @UsePipes(new BodyParamsPipe())
   @UseInterceptors(multerImagen)
   @Post('imagen')
   cargaImagenAvatar(
     @Body() createMsUsuarioDto: CreateMsUsuarioDto,
     @Res() response: Response,
     @Req() request: Request,
-    @UploadedFile() imagen: Express.Multer.File,
+    @UploadedFiles() files: Array<Express.Multer.File>,
     @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
   ) {
-    console.log(imagen);
+    console.log(files[0]);
     return 'cargar archivo';
   }
 
