@@ -34,6 +34,7 @@ production: &default
           identificacion: identificacion_usuario
           inicial: registro_inicial_usuario
           pin: registro_pin_usuario
+          imagen: imagen_usuario
         roles:
           listado: listado_roles
           crear: crear_rol
@@ -97,6 +98,7 @@ development:
           identificacion: identificacion_usuario
           inicial: registro_inicial_usuario
           pin: registro_pin_usuario
+          imagen: imagen_usuario
         roles:
           listado: listado_roles
           crear: crear_rol

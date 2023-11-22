@@ -6,8 +6,10 @@ import { catchError, throwError } from 'rxjs';
 import { CreateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/create-ms-usuario.dto';
 import { UpdateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/update-ms-usuario.dto';
 import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
+import { CreateImagenDto } from '@models/ms-seguridad/ms-usuarios/dto/create-imagen.dto';
 
 import config from '@app/libs/config/config';
+import { ActualizaUsuarioImagenDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/actualiza-usuarioimagen.dto';
 
 @Injectable()
 export class MsUsuariosService {
@@ -152,4 +154,39 @@ export class MsUsuariosService {
   remove(id: number) {
     return `This action removes a #${id} msUsuario`;
   }
+
+  actualizaImagen(
+    actualizaUsuarioImagenDto: ActualizaUsuarioImagenDto,
+    files: Array<Express.Multer.File>,
+    serverUrl: string, 
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,    
+  ) {
+    try {
+      // * agrega al objeto de actualización...
+      actualizaUsuarioImagenDto.imagen = new CreateImagenDto(files[0], serverUrl);
+      // * desestructura el objeto de autorización...
+      const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;      
+      // * ms editar...
+      return this.clientProxySeguridad
+        .send(
+          {
+            cmd: config().microservicios.seguridad.procesos.usuario.imagen,
+          },
+          {
+            ...actualizaUsuarioImagenDto,
+            ...autorizacionDTO,
+          },
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );      
+    } catch (error) {
+      throw error;
+    }  
+  }
+
 }
