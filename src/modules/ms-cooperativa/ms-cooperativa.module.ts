@@ -15,13 +15,13 @@ import config from '@app/libs/config/config';
         transport: Transport.TCP,
         options: {
           host: config().microservicios.cooperativa.nombre,
-          port: config().microservicios.cooperativa.puerto
+          port: config().microservicios.cooperativa.puerto,
         },
       },
     ]),
     ConfigModule,
-  ],  
+  ],
   controllers: [MsCooperativaController],
-  providers: [MsCooperativaService]
+  providers: [MsCooperativaService],
 })
 export class MsCooperativaModule {}

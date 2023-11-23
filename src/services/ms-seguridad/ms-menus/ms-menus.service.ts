@@ -5,7 +5,7 @@ import { catchError, throwError } from 'rxjs';
 
 import { CreateMsMenuDto } from '@models/ms-seguridad/ms-menus/dto/create-ms-menu.dto';
 import { UpdateMsMenuDto } from '@models/ms-seguridad/ms-menus/dto/update-ms-menu.dto';
-import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
+import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 
 import config from '@app/libs/config/config';
 
@@ -43,7 +43,7 @@ export class MsMenusService {
   ) {
     try {
       // * desestructura el objeto de autorización...
-      const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;
+      const { id, ...autorizacionDTO } = autorizacionUsuarioDto;
       // * enviando mensaje al MS...
       return this.clientProxySeguridad
         .send(
@@ -98,7 +98,7 @@ export class MsMenusService {
   ) {
     try {
       // * desestructura el objeto de autorización...
-      const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;
+      const { id, ...autorizacionDTO } = autorizacionUsuarioDto;
       // * ms editar...
       return this.clientProxySeguridad
         .send(

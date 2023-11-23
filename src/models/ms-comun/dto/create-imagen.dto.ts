@@ -1,3 +1,5 @@
+import { UtilitariosService } from '@services/utilitarios/utilitarios.service';
+
 export class CreateImagenDto {
   destination: string; // * "/home/usuario/Proyectos/nodejs/servidor/server_cf/api-enlace-cooperativa/public/13561656232"
   encoding: string; // * "7bit"
@@ -8,7 +10,7 @@ export class CreateImagenDto {
   path: string; // * "/home/usuario/Proyectos/nodejs/servidor/server_cf/api-enlace-cooperativa/public/13561656232/13561656232.jpeg"
   size: number; // * 131101
   url: string;
-  buffer: Buffer;
+  base64: string;
 
   constructor(file: Express.Multer.File, serverUrl: string) {
     this.destination = file.destination;
@@ -19,7 +21,7 @@ export class CreateImagenDto {
     this.originalname = file.originalname;
     this.path = file.path;
     this.size = file.size;
-    this.buffer = file.buffer;
-    this.url = serverUrl;
+    this.base64 = UtilitariosService.retornaArchivoBase64(file.path);
+    this.url = `${serverUrl}/${file.fieldname}/${file.filename}`;
   }
 }

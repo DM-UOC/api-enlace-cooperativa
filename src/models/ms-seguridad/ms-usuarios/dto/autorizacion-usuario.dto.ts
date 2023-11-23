@@ -1,5 +1,5 @@
 export class AutorizacionUsuarioDto {
-  readonly _id: string;
+  readonly id: string;
   readonly usuario: string;
   readonly nombres: string;
   readonly exp: number;

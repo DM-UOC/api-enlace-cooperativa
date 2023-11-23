@@ -19,7 +19,7 @@ import { Autorizacion } from '@decorators/autorizacion.decorator';
 
 import { CreateMsMenuDto } from '@models/ms-seguridad/ms-menus/dto/create-ms-menu.dto';
 import { UpdateMsMenuDto } from '@models/ms-seguridad/ms-menus/dto/update-ms-menu.dto';
-import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
+import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 
 import { MsMenusService } from '@services/ms-seguridad/ms-menus/ms-menus.service';
 

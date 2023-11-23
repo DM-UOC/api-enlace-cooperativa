@@ -43,6 +43,10 @@ production: &default
       alias: MS_COOPERATIVA
       nombre: dc_js_mscooperativa
       puerto: 3002
+      procesos:
+        movimientos:
+          usuario:
+            crear: movimiento_crear_usuario
   carpetas:
     publicas:
       publica: public
@@ -107,3 +111,7 @@ development:
       alias: MS_COOPERATIVA
       nombre: '0.0.0.0'
       puerto: 3002
+      procesos:
+        movimientos:
+          usuario:
+            crear: movimiento_crear_usuario

@@ -16,7 +16,7 @@ import { Autorizacion } from '@decorators/autorizacion.decorator';
 
 import { CreateMsRoleDto } from '@models/ms-seguridad/ms-roles/dto/create-ms-role.dto';
 import { UpdateMsRoleDto } from '@models/ms-seguridad/ms-roles/dto/update-ms-role.dto';
-import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
+import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 
 import { MsRolesService } from '@services/ms-seguridad/ms-roles/ms-roles.service';
 

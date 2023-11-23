@@ -1,4 +1,4 @@
-import { CreateImagenDto } from "./create-imagen.dto";
+import { CreateImagenDto } from '@models/ms-comun/dto/create-imagen.dto';
 
 export class ActualizaUsuarioImagenDto {
   readonly _id: string; // * "sdg24fsd5gDSasdf"

@@ -4,7 +4,7 @@ import { ClientProxy } from '@nestjs/microservices';
 
 import { CreateMsSubmenuDto } from '@models/ms-seguridad/ms-submenus/dto/create-ms-submenu.dto';
 import { UpdateMsSubmenuDto } from '@models/ms-seguridad/ms-submenus/dto/update-ms-submenu.dto';
-import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
+import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 
 import config from '@app/libs/config/config';
 import { catchError, throwError } from 'rxjs';
@@ -23,7 +23,7 @@ export class MsSubmenusService {
   ) {
     try {
       // * desestructura el objeto de autorización para solo enviar el usuario...
-      const { _id, exp, iat, nombres, ...autorizacionDTO } =
+      const { id, exp, iat, nombres, ...autorizacionDTO } =
         autorizacionUsuarioDto;
       // * enviando mensaje al MS...
       return this.clientProxySeguridad
@@ -62,7 +62,7 @@ export class MsSubmenusService {
   ) {
     try {
       // * desestructura el objeto de autorización...
-      const { _id, exp, iat, nombres, ...autorizacionDTO } =
+      const { id, exp, iat, nombres, ...autorizacionDTO } =
         autorizacionUsuarioDto;
       // * ms editar...
       return this.clientProxySeguridad

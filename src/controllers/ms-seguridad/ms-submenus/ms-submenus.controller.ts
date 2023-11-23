@@ -18,7 +18,7 @@ import { SeguridadGuard } from '@guards/seguridad.guard';
 
 import { CreateMsSubmenuDto } from '@models/ms-seguridad/ms-submenus/dto/create-ms-submenu.dto';
 import { UpdateMsSubmenuDto } from '@models/ms-seguridad/ms-submenus/dto/update-ms-submenu.dto';
-import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
+import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 
 import { MsSubmenusService } from '@services/ms-seguridad/ms-submenus/ms-submenus.service';
 

@@ -21,7 +21,7 @@ import { Autorizacion } from '@decorators/autorizacion.decorator';
 
 import { CreateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/create-ms-usuario.dto';
 import { UpdateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/update-ms-usuario.dto';
-import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
+import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 import { ActualizaUsuarioImagenDto } from '@models/ms-seguridad/ms-usuarios/dto/actualiza-usuarioimagen.dto';
 
 import { BodyParamsPipe } from '@pipes/bodyparams/bodyparams.pipe';
@@ -96,22 +96,24 @@ export class MsUsuariosController {
     @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
   ) {
     // * recogemos la url...
-    const serverUrl =  request['serverurl'];
+    const serverUrl = request['serverurl'];
     // * enviamos el mensaje para realizar el proceso de guardado...
     return this.msUsuariosService
-    .actualizaImagen(actualizaUsuarioImagenDto, files, serverUrl, autorizacionUsuarioDto)
-    .subscribe(
-      {
+      .actualizaImagen(
+        actualizaUsuarioImagenDto,
+        files,
+        serverUrl,
+        autorizacionUsuarioDto,
+      )
+      .subscribe({
         next(usuario) {
           // * responde el token...
           return response.status(HttpStatus.OK).json(usuario);
         },
         error(err) {
           return response.status(HttpStatus.BAD_REQUEST).json(err);
-        },        
-      }
-    );
-    
+        },
+      });
   }
 
   @UseGuards(SeguridadGuard)

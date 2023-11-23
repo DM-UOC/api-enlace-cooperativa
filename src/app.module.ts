@@ -11,6 +11,8 @@ import { MsUsuariosModule } from '@modules/ms-seguridad/ms-usuarios/ms-usuarios.
 import { MsRolesModule } from '@modules/ms-seguridad/ms-roles/ms-roles.module';
 import { MsMenusModule } from '@modules/ms-seguridad/ms-menus/ms-menus.module';
 import { MsSubmenusModule } from '@modules/ms-seguridad/ms-submenus/ms-submenus.module';
+import { MsPrestamosModule } from '@modules/ms-cooperativa/ms-prestamos/ms-prestamos.module';
+import { MsMovimientosModule } from '@modules/ms-cooperativa/ms-movimientos/ms-movimientos.module';
 
 import config from '@app/libs/config/config';
 
@@ -28,6 +30,8 @@ import config from '@app/libs/config/config';
     MsRolesModule,
     MsMenusModule,
     MsSubmenusModule,
+    MsPrestamosModule,
+    MsMovimientosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

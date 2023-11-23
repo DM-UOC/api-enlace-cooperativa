@@ -5,7 +5,7 @@ import { catchError, throwError } from 'rxjs';
 
 import { CreateMsRoleDto } from '@models/ms-seguridad/ms-roles/dto/create-ms-role.dto';
 import { UpdateMsRoleDto } from '@models/ms-seguridad/ms-roles/dto/update-ms-role.dto';
-import { AutorizacionUsuarioDto } from '@models/ms-seguridad/usuario/dto/autorizacion-usuario.dto';
+import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 
 import config from '@app/libs/config/config';
 
@@ -23,7 +23,7 @@ export class MsRolesService {
   ) {
     try {
       // * desestructura el objeto de autorización...
-      const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;
+      const { id, ...autorizacionDTO } = autorizacionUsuarioDto;
       // * enviando mensaje al MS...
       return this.clientProxySeguridad
         .send(
@@ -78,7 +78,7 @@ export class MsRolesService {
   ) {
     try {
       // * desestructura el objeto de autorización...
-      const { _id, ...autorizacionDTO } = autorizacionUsuarioDto;
+      const { id, ...autorizacionDTO } = autorizacionUsuarioDto;
       // * ms editar...
       return this.clientProxySeguridad
         .send(
