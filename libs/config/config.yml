@@ -115,3 +115,5 @@ development:
         movimientos:
           usuario:
             crear: movimiento_crear_usuario
+            retiro:
+              verifica: movimiento_retiro_verifica_usuario

@@ -5,8 +5,8 @@ import { catchError, throwError } from 'rxjs';
 
 import { CreateImagenDto } from '@models/ms-comun/dto/create-imagen.dto';
 import { CreateMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/create-ms-movimiento.dto';
-import { UpdateMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/update-ms-movimiento.dto';
 import { AutorizacionUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
+import { VerificaRetiroMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/verificaretirno-ms-movimiento.dto';
 
 import config from '@app/libs/config/config';
 
@@ -14,7 +14,7 @@ import config from '@app/libs/config/config';
 export class MsMovimientosService {
   constructor(
     @Inject(config().microservicios.cooperativa.alias)
-    private readonly clientProxySeguridad: ClientProxy,
+    private readonly clientProxyCooperativa: ClientProxy,
     private readonly configService: ConfigService,
   ) {}
 
@@ -28,7 +28,7 @@ export class MsMovimientosService {
       // * agrega al objeto de actualización...
       createMsMovimientoDto.imagen = new CreateImagenDto(files[0], serverUrl);
       // * enviando mensaje al MS...
-      return this.clientProxySeguridad
+      return this.clientProxyCooperativa
         .send(
           {
             cmd: config().microservicios.cooperativa.procesos.movimientos
@@ -59,11 +59,33 @@ export class MsMovimientosService {
     return `This action returns a #${id} msMovimiento`;
   }
 
-  update(id: number, updateMsMovimientoDto: UpdateMsMovimientoDto) {
+  update(id: number) {
     return `This action updates a #${id} msMovimiento`;
   }
 
   remove(id: number) {
     return `This action removes a #${id} msMovimiento`;
+  }
+
+  verificaRetiro(verificaRetiroMovimientoDto: VerificaRetiroMovimientoDto) {
+    try {
+      return this.clientProxyCooperativa
+        .send(
+          {
+            cmd: config().microservicios.cooperativa.procesos.movimientos
+              .usuario.retiro.verifica,
+          },
+          verificaRetiroMovimientoDto,
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
   }
 }

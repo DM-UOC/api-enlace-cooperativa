@@ -13,6 +13,9 @@ export class UtilitariosService {
     FECHA: {
       YYYYMMDD_HHMM: 'YYYY-MM-DD HH:mm',
     },
+    FECHA_ARCHIVO: {
+      YYYYMMDD_HHMM: 'YYYYMMDD_HHmm',
+    },
   };
 
   static MENSAJES = {
@@ -33,6 +36,12 @@ export class UtilitariosService {
 
   static retornaFechaActual() {
     return moment().format(UtilitariosService.FORMATOS.FECHA.YYYYMMDD_HHMM);
+  }
+
+  static retornaFechaRegistro(): string {
+    return moment().format(
+      UtilitariosService.FORMATOS.FECHA_ARCHIVO.YYYYMMDD_HHMM,
+    );
   }
 
   static verificaFechas(fechaComparar: Date, esMayor = false) {
