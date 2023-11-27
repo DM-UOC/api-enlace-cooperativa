@@ -55,7 +55,7 @@ export class MsMovimientosController {
         .create(createMsMovimientoDto, files, serverUrl, autorizacionUsuarioDto)
         .subscribe({
           next(movimiento) {
-            // * responde el token...
+            // * responde el resultado...
             return response.status(HttpStatus.OK).json(movimiento);
           },
           error(err) {
@@ -79,7 +79,16 @@ export class MsMovimientosController {
   ) {
     return this.msMovimientosService.verificaRetiro(
       verificaRetiroMovimientoDto,
-    );
+    )
+    .subscribe({
+      next(movimiento) {
+        // * responde resultado...
+        return response.status(HttpStatus.OK).json(movimiento);
+      },
+      error(err) {
+        return response.status(HttpStatus.BAD_REQUEST).json(err);
+      },
+    });
   }
 
   @Get(':id')
