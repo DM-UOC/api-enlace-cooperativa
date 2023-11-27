@@ -59,6 +59,52 @@ export class MsMovimientosService {
     return `This action returns a #${id} msMovimiento`;
   }
 
+  ultimoMovimientoPorUsuarioId(id: string) {
+    try {
+      return this.clientProxyCooperativa
+        .send(
+          {
+            cmd: this.configService.get(
+              'microservicios.cooperativa.procesos.movimientos.usuario.ultimo',
+            ),
+          },
+          id,
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  movimientosPorUsuarioId(id: string) {
+    try {
+      return this.clientProxyCooperativa
+        .send(
+          {
+            cmd: this.configService.get(
+              'microservicios.cooperativa.procesos.movimientos.usuario.todos',
+            ),
+          },
+          id,
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   update(id: number) {
     return `This action updates a #${id} msMovimiento`;
   }

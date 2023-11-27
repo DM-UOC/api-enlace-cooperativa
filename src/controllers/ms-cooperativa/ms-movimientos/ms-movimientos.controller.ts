@@ -77,13 +77,43 @@ export class MsMovimientosController {
     @Query() verificaRetiroMovimientoDto: VerificaRetiroMovimientoDto,
     @Res() response: Response,
   ) {
-    return this.msMovimientosService.verificaRetiro(
-      verificaRetiroMovimientoDto,
-    )
-    .subscribe({
-      next(movimiento) {
+    return this.msMovimientosService
+      .verificaRetiro(verificaRetiroMovimientoDto)
+      .subscribe({
+        next(movimiento) {
+          // * responde resultado...
+          return response.status(HttpStatus.OK).json(movimiento);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
+  }
+
+  @Get('ultimo')
+  ultimoMovimientoPorUsuarioId(
+    @Query('id') id: string,
+    @Res() response: Response,
+  ) {
+    return this.msMovimientosService
+      .ultimoMovimientoPorUsuarioId(id)
+      .subscribe({
+        next(movimiento) {
+          // * responde resultado...
+          return response.status(HttpStatus.OK).json(movimiento);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
+  }
+
+  @Get('ultimo')
+  movimientosPorUsuarioId(@Query('id') id: string, @Res() response: Response) {
+    return this.msMovimientosService.movimientosPorUsuarioId(id).subscribe({
+      next(movimientos) {
         // * responde resultado...
-        return response.status(HttpStatus.OK).json(movimiento);
+        return response.status(HttpStatus.OK).json(movimientos);
       },
       error(err) {
         return response.status(HttpStatus.BAD_REQUEST).json(err);
