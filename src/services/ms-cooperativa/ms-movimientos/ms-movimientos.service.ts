@@ -51,6 +51,36 @@ export class MsMovimientosService {
     }
   }
 
+  crearRetiro(
+    createMsMovimientoDto: CreateMsMovimientoDto,
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    try {
+      // * enviando mensaje al MS...
+      return this.clientProxyCooperativa
+        .send(
+          {
+            cmd: this.configService.get(
+              'microservicios.cooperativa.procesos.movimientos.usuario.retiro.crear',
+            ),
+          },
+          {
+            ...createMsMovimientoDto,
+            ...autorizacionUsuarioDto,
+          },
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   findAll() {
     return `This action returns all msMovimientos`;
   }

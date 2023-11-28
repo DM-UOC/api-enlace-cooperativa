@@ -67,6 +67,32 @@ export class MsMovimientosController {
     }
   }
 
+  @UseGuards(SeguridadGuard)
+  @Post('retiro')
+  crearRetiro(
+    @Body() createMsMovimientoDto: CreateMsMovimientoDto,
+    @Res() response: Response,
+    @Req() request: Request,
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    try {
+      // * crea el movimiento...
+      this.msMovimientosService
+        .crearRetiro(createMsMovimientoDto, autorizacionUsuarioDto)
+        .subscribe({
+          next(movimiento) {
+            // * responde el resultado...
+            return response.status(HttpStatus.OK).json(movimiento);
+          },
+          error(err) {
+            return response.status(HttpStatus.BAD_REQUEST).json(err);
+          },
+        });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @Get()
   findAll() {
     return this.msMovimientosService.findAll();
@@ -108,7 +134,7 @@ export class MsMovimientosController {
       });
   }
 
-  @Get('ultimo')
+  @Get('movimientos')
   movimientosPorUsuarioId(@Query('id') id: string, @Res() response: Response) {
     return this.msMovimientosService.movimientosPorUsuarioId(id).subscribe({
       next(movimientos) {
