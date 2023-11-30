@@ -35,6 +35,8 @@ production: &default
           inicial: registro_inicial_usuario
           pin: registro_pin_usuario
           imagen: imagen_usuario
+          correo:
+            registrar: correo_registrar_usuario
         roles:
           listado: listado_roles
           crear: crear_rol
@@ -108,6 +110,8 @@ development:
           inicial: registro_inicial_usuario
           pin: registro_pin_usuario
           imagen: imagen_usuario
+          correo:
+            registrar: correo_registrar_usuario
         roles:
           listado: listado_roles
           crear: crear_rol

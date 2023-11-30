@@ -10,6 +10,7 @@ import { ActualizaUsuarioImagenDto } from '@models/ms-seguridad/ms-usuarios/dto/
 import { CreateImagenDto } from '@models/ms-comun/dto/create-imagen.dto';
 
 import config from '@app/libs/config/config';
+import { RegistraUsuarioCorreoDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/registra-usuario.correo.dto';
 
 @Injectable()
 export class MsUsuariosService {
@@ -138,6 +139,64 @@ export class MsUsuariosService {
             cmd,
           },
           updateMsUsuarioDto,
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  registraCorreoUsuario(
+    registraUsuarioCorreoDto: RegistraUsuarioCorreoDto,
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    try {
+      // * ms registrar correo...
+      return this.clientProxySeguridad
+        .send(
+          {
+            cmd: this.configService.get(
+              'microservicios.seguridad.procesos.usuario.correo.registrar',
+            ),
+          },
+          {
+            ...registraUsuarioCorreoDto,
+            ...autorizacionUsuarioDto,
+          },
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  actualizaCorreoUsuario(
+    registraUsuarioCorreoDto: RegistraUsuarioCorreoDto,
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    try {
+      // * ms registrar correo...
+      return this.clientProxySeguridad
+        .send(
+          {
+            cmd: this.configService.get(''),
+          },
+          {
+            ...registraUsuarioCorreoDto,
+            ...autorizacionUsuarioDto,
+          },
         )
         .pipe(
           catchError((error) => {
