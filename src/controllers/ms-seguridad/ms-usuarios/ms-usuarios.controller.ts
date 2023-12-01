@@ -155,8 +155,8 @@ export class MsUsuariosController {
     }
   }
 
-  @Patch('actualiza/correo')
-  actualizaCorreo(
+  @Patch('estado/correo')
+  actualizaEstadoCorreo(
     @Body() registraUsuarioCorreoDto: RegistraUsuarioCorreoDto,
     @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
     @Res() response: Response,
