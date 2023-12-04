@@ -183,7 +183,7 @@ export class MsUsuariosService {
     }
   }
 
-  editarCorreoUsuario(
+  editarCorreo(
     actualizaUsuarioCorreoDto: ActualizaUsuarioCorreoDto,
     autorizacionUsuarioDto: AutorizacionUsuarioDto,
   ) {
@@ -193,7 +193,7 @@ export class MsUsuariosService {
         .send(
           {
             cmd: this.configService.get(
-              'microservicios.seguridad.procesos.usuario.correo.editar',              
+              'microservicios.seguridad.procesos.usuario.correo.editar',
             ),
           },
           {

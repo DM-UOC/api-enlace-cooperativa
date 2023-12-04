@@ -132,6 +132,7 @@ export class MsUsuariosController {
       });
   }
 
+  @UseGuards(SeguridadGuard)
   @Post('nuevo/correo')
   agregaCorreo(
     @Body() registraUsuarioCorreoDto: RegistraUsuarioCorreoDto,
@@ -156,8 +157,9 @@ export class MsUsuariosController {
     }
   }
 
+  @UseGuards(SeguridadGuard)
   @Patch('editar/correo')
-  actualizaEstadoCorreo(
+  editarCorreo(
     @Body() actualizaUsuarioCorreoDto: ActualizaUsuarioCorreoDto,
     @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
     @Res() response: Response,
@@ -165,7 +167,7 @@ export class MsUsuariosController {
     try {
       // * enviamos el mensaje para realizar el proceso de guardado...
       return this.msUsuariosService
-        .editarCorreoUsuario(actualizaUsuarioCorreoDto, autorizacionUsuarioDto)
+        .editarCorreo(actualizaUsuarioCorreoDto, autorizacionUsuarioDto)
         .subscribe({
           next(usuario) {
             // * responde el token...
@@ -180,6 +182,7 @@ export class MsUsuariosController {
     }
   }
 
+  @UseGuards(SeguridadGuard)
   @Delete('eliminar/correo')
   eliminaEstadoCorreo(
     @Body() actualizaUsuarioCorreoDto: ActualizaUsuarioCorreoDto,
@@ -189,7 +192,10 @@ export class MsUsuariosController {
     try {
       // * enviamos el mensaje para realizar el proceso de guardado...
       return this.msUsuariosService
-        .eliminarCorreoUsuario(actualizaUsuarioCorreoDto, autorizacionUsuarioDto)
+        .eliminarCorreoUsuario(
+          actualizaUsuarioCorreoDto,
+          autorizacionUsuarioDto,
+        )
         .subscribe({
           next(usuario) {
             // * responde el token...
