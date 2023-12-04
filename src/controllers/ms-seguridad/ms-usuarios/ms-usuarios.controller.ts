@@ -23,9 +23,10 @@ import { Autorizacion } from '@decorators/autorizacion.decorator';
 
 import { CreateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/create-ms-usuario.dto';
 import { UpdateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/update-ms-usuario.dto';
-import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
+import { AutorizacionUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 import { ActualizaUsuarioImagenDto } from '@models/ms-seguridad/ms-usuarios/dto/actualiza-usuarioimagen.dto';
 import { RegistraUsuarioCorreoDto } from '@models/ms-seguridad/ms-usuarios/dto/registra-usuario.correo.dto';
+import { ActualizaUsuarioCorreoDto } from '@models/ms-seguridad/ms-usuarios/dto/actualiza-usuario.correo.dto';
 
 import { BodyParamsPipe } from '@pipes/bodyparams/bodyparams.pipe';
 
@@ -155,16 +156,40 @@ export class MsUsuariosController {
     }
   }
 
-  @Patch('estado/correo')
+  @Patch('editar/correo')
   actualizaEstadoCorreo(
-    @Body() registraUsuarioCorreoDto: RegistraUsuarioCorreoDto,
+    @Body() actualizaUsuarioCorreoDto: ActualizaUsuarioCorreoDto,
     @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
     @Res() response: Response,
   ) {
     try {
       // * enviamos el mensaje para realizar el proceso de guardado...
       return this.msUsuariosService
-        .registraCorreoUsuario(registraUsuarioCorreoDto, autorizacionUsuarioDto)
+        .editarCorreoUsuario(actualizaUsuarioCorreoDto, autorizacionUsuarioDto)
+        .subscribe({
+          next(usuario) {
+            // * responde el token...
+            return response.status(HttpStatus.OK).json(usuario);
+          },
+          error(err) {
+            return response.status(HttpStatus.BAD_REQUEST).json(err);
+          },
+        });
+    } catch (error) {
+      return response.status(HttpStatus.BAD_REQUEST).json(error);
+    }
+  }
+
+  @Delete('eliminar/correo')
+  eliminaEstadoCorreo(
+    @Body() actualizaUsuarioCorreoDto: ActualizaUsuarioCorreoDto,
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
+    @Res() response: Response,
+  ) {
+    try {
+      // * enviamos el mensaje para realizar el proceso de guardado...
+      return this.msUsuariosService
+        .eliminarCorreoUsuario(actualizaUsuarioCorreoDto, autorizacionUsuarioDto)
         .subscribe({
           next(usuario) {
             // * responde el token...

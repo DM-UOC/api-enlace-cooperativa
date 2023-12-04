@@ -37,6 +37,8 @@ production: &default
           imagen: imagen_usuario
           correo:
             registrar: correo_registrar_usuario
+            editar: correo_editar_usuario
+            eliminar: correo_eliminar_usuario
         roles:
           listado: listado_roles
           crear: crear_rol
@@ -112,6 +114,8 @@ development:
           imagen: imagen_usuario
           correo:
             registrar: correo_registrar_usuario
+            editar: correo_editar_usuario
+            eliminar: correo_eliminar_usuario            
         roles:
           listado: listado_roles
           crear: crear_rol

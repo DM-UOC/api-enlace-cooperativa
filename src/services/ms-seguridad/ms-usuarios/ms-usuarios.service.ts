@@ -8,9 +8,10 @@ import { UpdateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/update-
 import { AutorizacionUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 import { ActualizaUsuarioImagenDto } from '@models/ms-seguridad/ms-usuarios/dto/actualiza-usuarioimagen.dto';
 import { CreateImagenDto } from '@models/ms-comun/dto/create-imagen.dto';
+import { RegistraUsuarioCorreoDto } from '@models/ms-seguridad/ms-usuarios/dto/registra-usuario.correo.dto';
+import { ActualizaUsuarioCorreoDto } from '@models/ms-seguridad/ms-usuarios/dto/actualiza-usuario.correo.dto';
 
 import config from '@app/libs/config/config';
-import { RegistraUsuarioCorreoDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/registra-usuario.correo.dto';
 
 @Injectable()
 export class MsUsuariosService {
@@ -182,8 +183,8 @@ export class MsUsuariosService {
     }
   }
 
-  actualizaCorreoUsuario(
-    registraUsuarioCorreoDto: RegistraUsuarioCorreoDto,
+  editarCorreoUsuario(
+    actualizaUsuarioCorreoDto: ActualizaUsuarioCorreoDto,
     autorizacionUsuarioDto: AutorizacionUsuarioDto,
   ) {
     try {
@@ -191,10 +192,42 @@ export class MsUsuariosService {
       return this.clientProxySeguridad
         .send(
           {
-            cmd: this.configService.get(''),
+            cmd: this.configService.get(
+              'microservicios.seguridad.procesos.usuario.correo.editar',              
+            ),
           },
           {
-            ...registraUsuarioCorreoDto,
+            ...actualizaUsuarioCorreoDto,
+            ...autorizacionUsuarioDto,
+          },
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  eliminarCorreoUsuario(
+    actualizaUsuarioCorreoDto: ActualizaUsuarioCorreoDto,
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    try {
+      // * ms registrar correo...
+      return this.clientProxySeguridad
+        .send(
+          {
+            cmd: this.configService.get(
+              'microservicios.seguridad.procesos.usuario.correo.eliminar',
+            ),
+          },
+          {
+            ...actualizaUsuarioCorreoDto,
             ...autorizacionUsuarioDto,
           },
         )
