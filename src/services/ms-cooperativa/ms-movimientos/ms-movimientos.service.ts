@@ -135,6 +135,29 @@ export class MsMovimientosService {
     }
   }
 
+  movimientosRetiros() {
+    try {
+      return this.clientProxyCooperativa
+        .send(
+          {
+            cmd: this.configService.get(
+              'microservicios.cooperativa.procesos.movimientos.retiros.general',
+            ),
+          },
+          {},
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   update(id: number) {
     return `This action updates a #${id} msMovimiento`;
   }

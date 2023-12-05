@@ -147,6 +147,19 @@ export class MsMovimientosController {
     });
   }
 
+  @Get('retiros')
+  movimientosRetiros(@Res() response: Response) {
+    return this.msMovimientosService.movimientosRetiros().subscribe({
+      next(movimientos) {
+        // * responde resultado...
+        return response.status(HttpStatus.OK).json(movimientos);
+      },
+      error(err) {
+        return response.status(HttpStatus.BAD_REQUEST).json(err);
+      },
+    });
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.msMovimientosService.findOne(+id);

@@ -49,6 +49,8 @@ production: &default
       puerto: 3002
       procesos:
         movimientos:
+          retiros:
+            general: movimientos_retiros
           usuario:
             crear: movimiento_crear_usuario
             ultimo: movimiento_ultimo_usuario
@@ -115,7 +117,7 @@ development:
           correo:
             registrar: correo_registrar_usuario
             editar: correo_editar_usuario
-            eliminar: correo_eliminar_usuario            
+            eliminar: correo_eliminar_usuario
         roles:
           listado: listado_roles
           crear: crear_rol
@@ -126,6 +128,8 @@ development:
       puerto: 3002
       procesos:
         movimientos:
+          retiros:
+            general: movimientos_retiros
           usuario:
             crear: movimiento_crear_usuario
             ultimo: movimiento_ultimo_usuario
