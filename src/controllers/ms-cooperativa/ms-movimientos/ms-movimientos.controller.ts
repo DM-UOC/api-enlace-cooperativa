@@ -27,6 +27,7 @@ import { CreateMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto
 import { UpdateMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/update-ms-movimiento.dto';
 import { AutorizacionUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 import { VerificaRetiroMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/verificaretirno-ms-movimiento.dto';
+import { AceptarRetiroMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/aceptar-retiro.ms-movimiento.dto';
 
 import { BodyParamsPipe } from '@pipes/bodyparams/bodyparams.pipe';
 
@@ -79,6 +80,36 @@ export class MsMovimientosController {
       // * crea el movimiento...
       this.msMovimientosService
         .crearRetiro(createMsMovimientoDto, autorizacionUsuarioDto)
+        .subscribe({
+          next(movimiento) {
+            // * responde el resultado...
+            return response.status(HttpStatus.OK).json(movimiento);
+          },
+          error(err) {
+            return response.status(HttpStatus.BAD_REQUEST).json(err);
+          },
+        });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @UseGuards(SeguridadGuard)
+  @UseInterceptors(multerImagenTransaccion)
+  @Post()
+  aceptarRetiro(
+    @Body() aceptarRetiroMsMovimientoDto: AceptarRetiroMsMovimientoDto,
+    @Res() response: Response,
+    @Req() request: Request,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    try {
+      // * recogemos la url...
+      const serverUrl = request['serverurl'];
+      // * crea el movimiento...
+      this.msMovimientosService
+        .aceptarRetiro(aceptarRetiroMsMovimientoDto, files, serverUrl, autorizacionUsuarioDto)
         .subscribe({
           next(movimiento) {
             // * responde el resultado...

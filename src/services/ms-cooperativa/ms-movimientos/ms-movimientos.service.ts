@@ -7,6 +7,7 @@ import { CreateImagenDto } from '@models/ms-comun/dto/create-imagen.dto';
 import { CreateMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/create-ms-movimiento.dto';
 import { AutorizacionUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 import { VerificaRetiroMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/verificaretirno-ms-movimiento.dto';
+import { AceptarRetiroMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/aceptar-retiro.ms-movimiento.dto';
 
 import config from '@app/libs/config/config';
 
@@ -28,24 +29,13 @@ export class MsMovimientosService {
       // * agrega al objeto de actualización...
       createMsMovimientoDto.imagen = new CreateImagenDto(files[0], serverUrl);
       // * enviando mensaje al MS...
-      return this.clientProxyCooperativa
-        .send(
-          {
-            cmd: config().microservicios.cooperativa.procesos.movimientos
-              .usuario.crear,
-          },
-          {
-            ...createMsMovimientoDto,
-            ...autorizacionUsuarioDto,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return this.ejecutaMicroServicio(
+        config().microservicios.cooperativa.procesos.movimientos.usuario.crear,
+        {
+          ...createMsMovimientoDto,
+          ...autorizacionUsuarioDto,
+        },
+      );
     } catch (error) {
       throw error;
     }
@@ -57,25 +47,35 @@ export class MsMovimientosService {
   ) {
     try {
       // * enviando mensaje al MS...
-      return this.clientProxyCooperativa
-        .send(
-          {
-            cmd: this.configService.get(
-              'microservicios.cooperativa.procesos.movimientos.usuario.retiro.crear',
-            ),
-          },
-          {
-            ...createMsMovimientoDto,
-            ...autorizacionUsuarioDto,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return this.ejecutaMicroServicio(
+        this.configService.get('microservicios.cooperativa.procesos.movimientos.usuario.retiro.crear'),
+        {
+          ...createMsMovimientoDto,
+          ...autorizacionUsuarioDto,
+        },
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  aceptarRetiro(
+    aceptarRetiroMsMovimientoDto: AceptarRetiroMsMovimientoDto,
+    files: Array<Express.Multer.File>,
+    serverUrl: string,
+    autorizacionUsuarioDto: AutorizacionUsuarioDto,    
+  ) {
+    try {
+      // * agrega al objeto de actualización...
+      aceptarRetiroMsMovimientoDto.imagen = new CreateImagenDto(files[0], serverUrl);      
+      // * enviando mensaje al MS...
+      return this.ejecutaMicroServicio(
+        this.configService.get('microservicios.cooperativa.procesos.movimientos.usuario.retiro.aceptar'),
+        {
+          ...aceptarRetiroMsMovimientoDto,
+          ...autorizacionUsuarioDto,
+        },
+      );      
     } catch (error) {
       throw error;
     }
@@ -187,4 +187,26 @@ export class MsMovimientosService {
       throw error;
     }
   }
+
+  private ejecutaMicroServicio<A, B>(cmd: A, objetoTransferencia: B) {
+    try {
+      return this.clientProxyCooperativa
+        .send(
+          {
+            cmd
+          },
+          objetoTransferencia
+        )
+        .pipe(
+          catchError((error) => {
+            return throwError(
+              () => new HttpException(error, HttpStatus.CONFLICT),
+            );
+          }),
+        );      
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
