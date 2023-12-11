@@ -28,6 +28,7 @@ import { UpdateMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto
 import { AutorizacionUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 import { VerificaRetiroMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/verificaretirno-ms-movimiento.dto';
 import { AceptarRetiroMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/aceptar-retiro.ms-movimiento.dto';
+import { EliminarRetiroMsMovimientoDto } from '@app/src/models/ms-cooperativa/ms-movimientos/dto/eliminar-retiro.ms-movimiento.dto';
 
 import { BodyParamsPipe } from '@pipes/bodyparams/bodyparams.pipe';
 
@@ -96,7 +97,7 @@ export class MsMovimientosController {
 
   @UseGuards(SeguridadGuard)
   @UseInterceptors(multerImagenTransaccion)
-  @Post()
+  @Post(['aceptar', 'retiro'])
   aceptarRetiro(
     @Body() aceptarRetiroMsMovimientoDto: AceptarRetiroMsMovimientoDto,
     @Res() response: Response,
@@ -109,7 +110,37 @@ export class MsMovimientosController {
       const serverUrl = request['serverurl'];
       // * crea el movimiento...
       this.msMovimientosService
-        .aceptarRetiro(aceptarRetiroMsMovimientoDto, files, serverUrl, autorizacionUsuarioDto)
+        .aceptarRetiro(
+          aceptarRetiroMsMovimientoDto,
+          files,
+          serverUrl,
+          autorizacionUsuarioDto,
+        )
+        .subscribe({
+          next(movimiento) {
+            // * responde el resultado...
+            return response.status(HttpStatus.OK).json(movimiento);
+          },
+          error(err) {
+            return response.status(HttpStatus.BAD_REQUEST).json(err);
+          },
+        });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @UseGuards(SeguridadGuard)
+  @Post(['eliminar', 'retiro'])
+  eliminarRetiro(
+    @Body() eliminarRetiroMsMovimientoDto: EliminarRetiroMsMovimientoDto,
+    @Res() response: Response,
+    @Autorizacion() autorizacionUsuarioDto: AutorizacionUsuarioDto,
+  ) {
+    try {
+      // * crea el movimiento...
+      this.msMovimientosService
+        .eliminarRetiro(eliminarRetiroMsMovimientoDto, autorizacionUsuarioDto)
         .subscribe({
           next(movimiento) {
             // * responde el resultado...
@@ -129,7 +160,7 @@ export class MsMovimientosController {
     return this.msMovimientosService.findAll();
   }
 
-  @Get('verifica/retiro')
+  @Get(['verifica', 'retiro'])
   verificaRetiro(
     @Query() verificaRetiroMovimientoDto: VerificaRetiroMovimientoDto,
     @Res() response: Response,

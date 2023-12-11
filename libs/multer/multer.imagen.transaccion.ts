@@ -12,7 +12,7 @@ const pathUpload = path.join(__dirname, '../../../', 'public');
 // * extensiones permitidadas...
 const extArchivo = ['.jpg', '.jpeg', '.png'];
 
-export const multerImagenTransaccion = AnyFilesInterceptor({
+export const  multerImagenTransaccion = AnyFilesInterceptor({
   limits: {
     fileSize: 2097152,
   },
