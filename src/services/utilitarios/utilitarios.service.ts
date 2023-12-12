@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { readFileSync, writeFileSync, createReadStream, rmSync } from 'fs';
 import * as moment from 'moment';
 import { join, extname } from 'path';
 
 import { Globals } from '@app/libs/config/globals';
+import { catchError, throwError } from 'rxjs';
+import { ClientProxy } from '@nestjs/microservices';
 declare const global: Globals;
 
 @Injectable()

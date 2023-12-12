@@ -14,6 +14,8 @@ import { MsSubmenusModule } from '@modules/ms-seguridad/ms-submenus/ms-submenus.
 import { MsPrestamosModule } from '@modules/ms-cooperativa/ms-prestamos/ms-prestamos.module';
 import { MsMovimientosModule } from '@modules/ms-cooperativa/ms-movimientos/ms-movimientos.module';
 
+import { ProxyService } from '@services/proxy/proxy.service';
+
 import config from '@app/libs/config/config';
 
 @Module({
@@ -34,6 +36,6 @@ import config from '@app/libs/config/config';
     MsMovimientosModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ProxyService],
 })
 export class AppModule {}

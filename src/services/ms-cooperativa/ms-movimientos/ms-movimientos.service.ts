@@ -10,6 +10,8 @@ import { VerificaRetiroMovimientoDto } from '@models/ms-cooperativa/ms-movimient
 import { AceptarRetiroMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/aceptar-retiro.ms-movimiento.dto';
 import { EliminarRetiroMsMovimientoDto } from '@app/src/models/ms-cooperativa/ms-movimientos/dto/eliminar-retiro.ms-movimiento.dto';
 
+import { UtilitariosService } from '@services/utilitarios/utilitarios.service';
+
 import config from '@app/libs/config/config';
 
 @Injectable()
@@ -216,22 +218,16 @@ export class MsMovimientosService {
     }
   }
 
-  private ejecutaMicroServicio<A, B>(cmd: A, objetoTransferencia: B) {
+  private ejecutaMicroServicio<A = string, B = any>(
+    cmd: A,
+    objetoTransferencia: B,
+  ) {
     try {
-      return this.clientProxyCooperativa
-        .send(
-          {
-            cmd,
-          },
-          objetoTransferencia,
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return UtilitariosService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
+        cmd,
+        objetoTransferencia,
+      );
     } catch (error) {
       throw error;
     }

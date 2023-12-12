@@ -1,7 +1,6 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
-import { catchError, throwError } from 'rxjs';
 
 import { CreateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/create-ms-usuario.dto';
 import { UpdateMsUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/update-ms-usuario.dto';
@@ -10,6 +9,8 @@ import { ActualizaUsuarioImagenDto } from '@models/ms-seguridad/ms-usuarios/dto/
 import { CreateImagenDto } from '@models/ms-comun/dto/create-imagen.dto';
 import { RegistraUsuarioCorreoDto } from '@models/ms-seguridad/ms-usuarios/dto/registra-usuario.correo.dto';
 import { ActualizaUsuarioCorreoDto } from '@models/ms-seguridad/ms-usuarios/dto/actualiza-usuario.correo.dto';
+
+import { ProxyService } from '@services/proxy/proxy.service';
 
 import config from '@app/libs/config/config';
 
@@ -29,23 +30,14 @@ export class MsUsuariosService {
       // * desestructura el objeto de autorización...
       const { id, ...autorizacionDTO } = autorizacionUsuarioDto;
       // * enviando mensaje al MS...
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd: config().microservicios.seguridad.procesos.usuarios.crear,
-          },
-          {
-            ...createMsUsuarioDto,
-            ...autorizacionDTO,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        config().microservicios.seguridad.procesos.usuarios.crear,
+        {
+          ...createMsUsuarioDto,
+          ...autorizacionDTO,
+        },
+      );
     } catch (error) {
       throw error;
     }
@@ -53,20 +45,12 @@ export class MsUsuariosService {
 
   findAll() {
     try {
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd: config().microservicios.seguridad.procesos.usuarios.listado,
-          },
-          {},
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      // * MS consulta...
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        config().microservicios.seguridad.procesos.usuarios.listado,
+        {},
+      );
     } catch (error) {
       throw error;
     }
@@ -78,20 +62,12 @@ export class MsUsuariosService {
       .identificacion,
   ) {
     try {
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd,
-          },
-          opcion,
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      // * MS consulta unico...
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        cmd,
+        opcion,
+      );
     } catch (error) {
       throw error;
     }
@@ -106,23 +82,10 @@ export class MsUsuariosService {
       // * desestructura el objeto de autorización...
       const { id, ...autorizacionDTO } = autorizacionUsuarioDto;
       // * ms editar...
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd,
-          },
-          {
-            ...updateMsUsuarioDto,
-            ...autorizacionDTO,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(this.clientProxySeguridad, cmd, {
+        ...updateMsUsuarioDto,
+        ...autorizacionDTO,
+      });
     } catch (error) {
       throw error;
     }
@@ -134,20 +97,11 @@ export class MsUsuariosService {
   ) {
     try {
       // * ms editar...
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd,
-          },
-          updateMsUsuarioDto,
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        cmd,
+        updateMsUsuarioDto,
+      );
     } catch (error) {
       throw error;
     }
@@ -159,25 +113,16 @@ export class MsUsuariosService {
   ) {
     try {
       // * ms registrar correo...
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd: this.configService.get(
-              'microservicios.seguridad.procesos.usuario.correo.registrar',
-            ),
-          },
-          {
-            ...registraUsuarioCorreoDto,
-            ...autorizacionUsuarioDto,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        this.configService.get(
+          'microservicios.seguridad.procesos.usuario.correo.registrar',
+        ),
+        {
+          ...registraUsuarioCorreoDto,
+          ...autorizacionUsuarioDto,
+        },
+      );
     } catch (error) {
       throw error;
     }
@@ -189,25 +134,16 @@ export class MsUsuariosService {
   ) {
     try {
       // * ms registrar correo...
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd: this.configService.get(
-              'microservicios.seguridad.procesos.usuario.correo.editar',
-            ),
-          },
-          {
-            ...actualizaUsuarioCorreoDto,
-            ...autorizacionUsuarioDto,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        this.configService.get(
+          'microservicios.seguridad.procesos.usuario.correo.editar',
+        ),
+        {
+          ...actualizaUsuarioCorreoDto,
+          ...autorizacionUsuarioDto,
+        },
+      );
     } catch (error) {
       throw error;
     }
@@ -219,25 +155,16 @@ export class MsUsuariosService {
   ) {
     try {
       // * ms registrar correo...
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd: this.configService.get(
-              'microservicios.seguridad.procesos.usuario.correo.eliminar',
-            ),
-          },
-          {
-            ...actualizaUsuarioCorreoDto,
-            ...autorizacionUsuarioDto,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        this.configService.get(
+          'microservicios.seguridad.procesos.usuario.correo.eliminar',
+        ),
+        {
+          ...actualizaUsuarioCorreoDto,
+          ...autorizacionUsuarioDto,
+        },
+      );
     } catch (error) {
       throw error;
     }
@@ -262,23 +189,14 @@ export class MsUsuariosService {
       // * desestructura el objeto de autorización...
       const { id, ...autorizacionDTO } = autorizacionUsuarioDto;
       // * ms editar...
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd: config().microservicios.seguridad.procesos.usuario.imagen,
-          },
-          {
-            ...actualizaUsuarioImagenDto,
-            ...autorizacionDTO,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        config().microservicios.seguridad.procesos.usuario.imagen,
+        {
+          ...actualizaUsuarioImagenDto,
+          ...autorizacionDTO,
+        },
+      );
     } catch (error) {
       throw error;
     }

@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { catchError, throwError } from 'rxjs';
 
 import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
+import { ProxyService } from '@services/proxy/proxy.service';
 
 import config from '@app/libs/config/config';
 
@@ -17,19 +17,11 @@ export class MsSeguridadService {
 
   autenticacion(autenticacionDto: AutenticacionDto) {
     try {
-      // * retornando procesos de autenticación...
-      return this.clientProxySeguridad
-        .send(
-          { cmd: config().microservicios.seguridad.procesos.autenticacion },
-          autenticacionDto,
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        config().microservicios.seguridad.procesos.autenticacion,
+        autenticacionDto,
+      );
     } catch (error) {
       throw error;
     }

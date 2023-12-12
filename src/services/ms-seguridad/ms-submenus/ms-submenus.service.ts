@@ -1,13 +1,15 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
+import { catchError, throwError } from 'rxjs';
 
 import { CreateMsSubmenuDto } from '@models/ms-seguridad/ms-submenus/dto/create-ms-submenu.dto';
 import { UpdateMsSubmenuDto } from '@models/ms-seguridad/ms-submenus/dto/update-ms-submenu.dto';
 import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
 
+import { UtilitariosService } from '@services/utilitarios/utilitarios.service';
+
 import config from '@app/libs/config/config';
-import { catchError, throwError } from 'rxjs';
 
 @Injectable()
 export class MsSubmenusService {
@@ -25,6 +27,14 @@ export class MsSubmenusService {
       // * desestructura el objeto de autorización para solo enviar el usuario...
       const { id, exp, iat, nombres, ...autorizacionDTO } =
         autorizacionUsuarioDto;
+      return UtilitariosService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        config().microservicios.seguridad.procesos.submenus.crear,
+        {
+          ...createMsSubmenuDto,
+          ...autorizacionDTO,
+        },
+      );
       // * enviando mensaje al MS...
       return this.clientProxySeguridad
         .send(
