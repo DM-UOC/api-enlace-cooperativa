@@ -1,7 +1,6 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
-import { catchError, throwError } from 'rxjs';
 
 import { CreateImagenDto } from '@models/ms-comun/dto/create-imagen.dto';
 import { CreateMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/create-ms-movimiento.dto';
@@ -10,7 +9,7 @@ import { VerificaRetiroMovimientoDto } from '@models/ms-cooperativa/ms-movimient
 import { AceptarRetiroMsMovimientoDto } from '@models/ms-cooperativa/ms-movimientos/dto/aceptar-retiro.ms-movimiento.dto';
 import { EliminarRetiroMsMovimientoDto } from '@app/src/models/ms-cooperativa/ms-movimientos/dto/eliminar-retiro.ms-movimiento.dto';
 
-import { UtilitariosService } from '@services/utilitarios/utilitarios.service';
+import { ProxyService } from '@services/proxy/proxy.service';
 
 import config from '@app/libs/config/config';
 
@@ -32,7 +31,8 @@ export class MsMovimientosService {
       // * agrega al objeto de actualización...
       createMsMovimientoDto.imagen = new CreateImagenDto(files[0], serverUrl);
       // * enviando mensaje al MS...
-      return this.ejecutaMicroServicio(
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
         config().microservicios.cooperativa.procesos.movimientos.usuario.crear,
         {
           ...createMsMovimientoDto,
@@ -50,7 +50,8 @@ export class MsMovimientosService {
   ) {
     try {
       // * enviando mensaje al MS...
-      return this.ejecutaMicroServicio(
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
         this.configService.get(
           'microservicios.cooperativa.procesos.movimientos.usuario.retiro.crear',
         ),
@@ -77,7 +78,8 @@ export class MsMovimientosService {
         serverUrl,
       );
       // * enviando mensaje al MS...
-      return this.ejecutaMicroServicio(
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
         this.configService.get(
           'microservicios.cooperativa.procesos.movimientos.usuario.retiro.aceptar',
         ),
@@ -97,7 +99,8 @@ export class MsMovimientosService {
   ) {
     try {
       // * enviando mensaje al MS...
-      return this.ejecutaMicroServicio(
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
         this.configService.get(
           'microservicios.cooperativa.procesos.movimientos.usuario.retiro.eliminar',
         ),
@@ -121,22 +124,14 @@ export class MsMovimientosService {
 
   ultimoMovimientoPorUsuarioId(id: string) {
     try {
-      return this.clientProxyCooperativa
-        .send(
-          {
-            cmd: this.configService.get(
-              'microservicios.cooperativa.procesos.movimientos.usuario.ultimo',
-            ),
-          },
-          id,
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      // * enviando mensaje al MS...
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
+        this.configService.get(
+          'microservicios.cooperativa.procesos.movimientos.usuario.ultimo',
+        ),
+        id,
+      );
     } catch (error) {
       throw error;
     }
@@ -144,22 +139,14 @@ export class MsMovimientosService {
 
   movimientosPorUsuarioId(id: string) {
     try {
-      return this.clientProxyCooperativa
-        .send(
-          {
-            cmd: this.configService.get(
-              'microservicios.cooperativa.procesos.movimientos.usuario.todos',
-            ),
-          },
-          id,
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      // * enviando mensaje al MS...
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
+        this.configService.get(
+          'microservicios.cooperativa.procesos.movimientos.usuario.todos',
+        ),
+        id,
+      );
     } catch (error) {
       throw error;
     }
@@ -167,22 +154,14 @@ export class MsMovimientosService {
 
   movimientosRetiros() {
     try {
-      return this.clientProxyCooperativa
-        .send(
-          {
-            cmd: this.configService.get(
-              'microservicios.cooperativa.procesos.movimientos.retiros.general',
-            ),
-          },
-          {},
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      // * enviando mensaje al MS...
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
+        this.configService.get(
+          'microservicios.cooperativa.procesos.movimientos.retiros.general',
+        ),
+        {},
+      );
     } catch (error) {
       throw error;
     }
@@ -198,35 +177,13 @@ export class MsMovimientosService {
 
   verificaRetiro(verificaRetiroMovimientoDto: VerificaRetiroMovimientoDto) {
     try {
-      return this.clientProxyCooperativa
-        .send(
-          {
-            cmd: config().microservicios.cooperativa.procesos.movimientos
-              .usuario.retiro.verifica,
-          },
-          verificaRetiroMovimientoDto,
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  private ejecutaMicroServicio<A = string, B = any>(
-    cmd: A,
-    objetoTransferencia: B,
-  ) {
-    try {
-      return UtilitariosService.ejecutaMicroServicio(
+      // * enviando mensaje al MS...
+      return ProxyService.ejecutaMicroServicio(
         this.clientProxyCooperativa,
-        cmd,
-        objetoTransferencia,
+        this.configService.get(
+          'microservicios.cooperativa.procesos.movimientos.usuario.retiro.verifica',
+        ),
+        verificaRetiroMovimientoDto,
       );
     } catch (error) {
       throw error;

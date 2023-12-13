@@ -5,7 +5,9 @@ import { catchError, throwError } from 'rxjs';
 
 import { CreateMsMenuDto } from '@models/ms-seguridad/ms-menus/dto/create-ms-menu.dto';
 import { UpdateMsMenuDto } from '@models/ms-seguridad/ms-menus/dto/update-ms-menu.dto';
-import { AutorizacionUsuarioDto } from '@app/src/models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
+import { AutorizacionUsuarioDto } from '@models/ms-seguridad/ms-usuarios/dto/autorizacion-usuario.dto';
+
+import { ProxyService } from '@services/proxy/proxy.service';
 
 import config from '@app/libs/config/config';
 
@@ -19,19 +21,12 @@ export class MsMenusService {
 
   usuarioMenus(_id: string) {
     try {
-      // * retornando menus usuario...
-      return this.clientProxySeguridad
-        .send(
-          { cmd: config().microservicios.seguridad.procesos.menus.usuario },
-          _id,
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      // * ms consulta menus usuario...
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        config().microservicios.seguridad.procesos.menus.usuario,
+        _id,
+      );
     } catch (error) {
       throw error;
     }
@@ -45,23 +40,14 @@ export class MsMenusService {
       // * desestructura el objeto de autorización...
       const { id, ...autorizacionDTO } = autorizacionUsuarioDto;
       // * enviando mensaje al MS...
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd: config().microservicios.seguridad.procesos.menus.crear,
-          },
-          {
-            ...createMsMenuDto,
-            ...autorizacionDTO,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        config().microservicios.seguridad.procesos.menus.crear,
+        {
+          ...createMsMenuDto,
+          ...autorizacionDTO,
+        },
+      );
     } catch (error) {
       throw error;
     }
@@ -69,20 +55,12 @@ export class MsMenusService {
 
   findAll() {
     try {
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd: config().microservicios.seguridad.procesos.menus.listado,
-          },
-          {},
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      // * MS consulta...
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        config().microservicios.seguridad.procesos.menus.listado,
+        {},
+      );
     } catch (error) {
       throw error;
     }
@@ -100,23 +78,14 @@ export class MsMenusService {
       // * desestructura el objeto de autorización...
       const { id, ...autorizacionDTO } = autorizacionUsuarioDto;
       // * ms editar...
-      return this.clientProxySeguridad
-        .send(
-          {
-            cmd: config().microservicios.seguridad.procesos.menus.editar,
-          },
-          {
-            ...updateMsMenuDto,
-            ...autorizacionDTO,
-          },
-        )
-        .pipe(
-          catchError((error) => {
-            return throwError(
-              () => new HttpException(error, HttpStatus.CONFLICT),
-            );
-          }),
-        );
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxySeguridad,
+        config().microservicios.seguridad.procesos.menus.editar,
+        {
+          ...updateMsMenuDto,
+          ...autorizacionDTO,
+        },
+      );
     } catch (error) {
       throw error;
     }

@@ -169,4 +169,20 @@ export class UtilitariosService {
       throw error;
     }
   }
+
+  static retornaMicroserviciosProcesos(objetoConfiguracion: any) {
+    try {
+      /**
+       * * desestructura objeto de configuracion yml...
+       */
+      const { seguridad, cooperativa } = objetoConfiguracion;
+      // * retornamos los diferentes mensajes...
+      return {
+        seguridad,
+        cooperativa,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

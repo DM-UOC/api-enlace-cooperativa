@@ -17,6 +17,7 @@ export class MsSeguridadService {
 
   autenticacion(autenticacionDto: AutenticacionDto) {
     try {
+      // * ms autenticación seguridad...
       return ProxyService.ejecutaMicroServicio(
         this.clientProxySeguridad,
         config().microservicios.seguridad.procesos.autenticacion,

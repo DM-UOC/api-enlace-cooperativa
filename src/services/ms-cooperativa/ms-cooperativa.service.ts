@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { AutenticacionDto } from '@models/ms-seguridad/autenticacion/autenticacion.dto';
 import { UtilitariosService } from '@services/utilitarios/utilitarios.service';
+import { ProxyService } from '../proxy/proxy.service';
 
 import config from '@app/libs/config/config';
 
@@ -18,12 +19,11 @@ export class MsCooperativaService {
   autenticar(autenticacionDto: AutenticacionDto) {
     try {
       // * retornando proceso de cooperativa..
-      return this.clientProxyCooperativa.send(
-        {
-          cmd: UtilitariosService.retornaCadenaMensajes(
-            this.configService.get('cadenas'),
-          ).microservicio.seguridad.autenticar,
-        },
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
+        UtilitariosService.retornaCadenaMensajes(
+          this.configService.get('cadenas'),
+        ).microservicio.seguridad.autenticar,
         autenticacionDto,
       );
     } catch (error) {
