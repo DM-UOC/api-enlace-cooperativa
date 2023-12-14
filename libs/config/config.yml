@@ -49,6 +49,8 @@ production: &default
       puerto: 3002
       procesos:
         movimientos:
+          depositos:
+            general: movimientos_depositos
           retiros:
             general: movimientos_retiros
           usuario:
@@ -58,7 +60,7 @@ production: &default
             retiro:
               crear: movimiento_retiro_crear_usuario
               aceptar: movimiento_retiro_aceptar_usuario
-              eliminar: movimiento_retiro_eliminar_usuario              
+              eliminar: movimiento_retiro_eliminar_usuario
               verifica: movimiento_retiro_verifica_usuario
   carpetas:
     publicas:
@@ -130,6 +132,8 @@ development:
       puerto: 3002
       procesos:
         movimientos:
+          depositos:
+            general: movimientos_depositos
           retiros:
             general: movimientos_retiros
           usuario:

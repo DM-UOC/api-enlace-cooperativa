@@ -34,6 +34,8 @@ import { BodyParamsPipe } from '@pipes/bodyparams/bodyparams.pipe';
 
 import { MsMovimientosService } from '@services/ms-cooperativa/ms-movimientos/ms-movimientos.service';
 
+import config from '@app/libs/config/config';
+
 @Controller('ms-movimientos')
 export class MsMovimientosController {
   constructor(private readonly msMovimientosService: MsMovimientosService) {}
@@ -97,7 +99,7 @@ export class MsMovimientosController {
 
   @UseGuards(SeguridadGuard)
   @UseInterceptors(multerImagenTransaccion)
-  @Post(['aceptar', 'retiro'])
+  @Patch('aceptar/retiro')
   aceptarRetiro(
     @Body() aceptarRetiroMsMovimientoDto: AceptarRetiroMsMovimientoDto,
     @Res() response: Response,
@@ -131,7 +133,7 @@ export class MsMovimientosController {
   }
 
   @UseGuards(SeguridadGuard)
-  @Post(['eliminar', 'retiro'])
+  @Patch('eliminar/retiro')
   eliminarRetiro(
     @Body() eliminarRetiroMsMovimientoDto: EliminarRetiroMsMovimientoDto,
     @Res() response: Response,
@@ -160,7 +162,7 @@ export class MsMovimientosController {
     return this.msMovimientosService.findAll();
   }
 
-  @Get(['verifica', 'retiro'])
+  @Get('verifica/retiro')
   verificaRetiro(
     @Query() verificaRetiroMovimientoDto: VerificaRetiroMovimientoDto,
     @Res() response: Response,
@@ -211,15 +213,38 @@ export class MsMovimientosController {
 
   @Get('retiros')
   movimientosRetiros(@Res() response: Response) {
-    return this.msMovimientosService.movimientosRetiros().subscribe({
-      next(movimientos) {
-        // * responde resultado...
-        return response.status(HttpStatus.OK).json(movimientos);
-      },
-      error(err) {
-        return response.status(HttpStatus.BAD_REQUEST).json(err);
-      },
-    });
+    return this.msMovimientosService
+      .retornaMovimientosPorTipo(
+        config().microservicios.cooperativa.procesos.movimientos.retiros
+          .general,
+      )
+      .subscribe({
+        next(movimientos) {
+          // * responde resultado...
+          return response.status(HttpStatus.OK).json(movimientos);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
+  }
+
+  @Get('depositos')
+  movimientosDepositos(@Res() response: Response) {
+    return this.msMovimientosService
+      .retornaMovimientosPorTipo(
+        config().microservicios.cooperativa.procesos.movimientos.depositos
+          .general,
+      )
+      .subscribe({
+        next(movimientos) {
+          // * responde resultado...
+          return response.status(HttpStatus.OK).json(movimientos);
+        },
+        error(err) {
+          return response.status(HttpStatus.BAD_REQUEST).json(err);
+        },
+      });
   }
 
   @Get(':id')

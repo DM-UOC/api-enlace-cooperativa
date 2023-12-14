@@ -152,14 +152,12 @@ export class MsMovimientosService {
     }
   }
 
-  movimientosRetiros() {
+  retornaMovimientosPorTipo(msConsultaTipo: string) {
     try {
       // * enviando mensaje al MS...
       return ProxyService.ejecutaMicroServicio(
         this.clientProxyCooperativa,
-        this.configService.get(
-          'microservicios.cooperativa.procesos.movimientos.retiros.general',
-        ),
+        msConsultaTipo,
         {},
       );
     } catch (error) {
