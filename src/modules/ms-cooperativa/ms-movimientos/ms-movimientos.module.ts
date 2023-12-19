@@ -22,7 +22,7 @@ import config from '@app/libs/config/config';
       },
     ]),
     ConfigModule,
-  ],  
+  ],
   controllers: [MsMovimientosController],
   providers: [MsMovimientosService, MsAutorizacionService],
 })

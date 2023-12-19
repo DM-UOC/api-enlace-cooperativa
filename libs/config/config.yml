@@ -48,6 +48,8 @@ production: &default
       nombre: dc_js_mscooperativa
       puerto: 3002
       procesos:
+        prestamos:
+          validacion: prestamos_validacion
         movimientos:
           depositos:
             general: movimientos_depositos
@@ -131,6 +133,8 @@ development:
       nombre: '0.0.0.0'
       puerto: 3002
       procesos:
+        prestamos:
+          validacion: prestamos_validacion
         movimientos:
           depositos:
             general: movimientos_depositos
