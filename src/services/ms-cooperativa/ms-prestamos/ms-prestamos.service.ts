@@ -28,7 +28,7 @@ export class MsPrestamosService {
       return ProxyService.ejecutaMicroServicio(
         this.clientProxyCooperativa,
         this.configService.get(
-          'microservicios.cooperativa.procesos.movimientos.usuario.retiro.verifica',
+          'microservicios.cooperativa.procesos.prestamos.validacion',
         ),
         validacionMsPrestamoDto,
       );
