@@ -19,7 +19,18 @@ export class MsPrestamosService {
   ) {}
 
   create(createMsPrestamoDto: CreateMsPrestamoDto) {
-    return 'This action adds a new msPrestamo';
+    try {
+      // * enviando mensaje al MS...
+      return ProxyService.ejecutaMicroServicio(
+        this.clientProxyCooperativa,
+        this.configService.get(
+          'microservicios.cooperativa.procesos.prestamos.crear',
+        ),
+        createMsPrestamoDto,
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   validacion(validacionMsPrestamoDto: ValidacionMsPrestamoDto) {

@@ -15,6 +15,7 @@ import { MsPrestamosModule } from '@modules/ms-cooperativa/ms-prestamos/ms-prest
 import { MsMovimientosModule } from '@modules/ms-cooperativa/ms-movimientos/ms-movimientos.module';
 
 import { ProxyService } from '@services/proxy/proxy.service';
+import { MsCalculosModule } from './controllers/ms-cooperativa/ms-calculos/ms-calculos.module';
 
 import config from '@app/libs/config/config';
 
@@ -34,6 +35,7 @@ import config from '@app/libs/config/config';
     MsSubmenusModule,
     MsPrestamosModule,
     MsMovimientosModule,
+    MsCalculosModule,
   ],
   controllers: [AppController],
   providers: [AppService, ProxyService],
